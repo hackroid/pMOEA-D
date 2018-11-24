@@ -68,8 +68,12 @@ function varargout = Iris_feature(Operation,Global,input)
                 newdataMat = (dataMat-repmat(minV,[len,1]))./(repmat(range,[len,1]));
                 for j = 1:numTest
 %                     classifyresult = KNN(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k);
-                    classifyresult = knnclassify(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k,'euclidean','random');
-                    if(classifyresult~=labels(j))
+                    % classifyresult = knnclassify(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k,'euclidean','random');
+                    knnModel = fitcknn(newdataMat(numTest:len,:),labels(numTest:len,:), 'NumNeighbors',k,'Standardize',1);
+                    disp(knnModel)
+                    res_mat = predict(knnModel, newdataMat(j,:));
+                    disp(res_mat)
+                    if(res_mat~=labels(j))
                         error = error+1;
                     end
                 end
