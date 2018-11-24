@@ -33,7 +33,9 @@ function varargout = Iris_feature(Operation,Global,input)
         case 'value'
             PopDec = input;
             [N,D]  = size(PopDec);
-            data = xlsread('./Problems/DTLZ/data.xlsx');
+            dataA = xlsread('./Problems/DTLZ/data.xlsx');
+            tmp_data_order = randperm(size(dataA, 1));
+            data = dataA(tmp_data_order, :);
             dataM = data(:,1:4);
             labels = data(:,5);
             PopObj = PopDec(:,1:2);
@@ -57,7 +59,7 @@ function varargout = Iris_feature(Operation,Global,input)
                 end
                 dataMat=dataM(:,PopDec(i,:)==1);
                 len = size(dataMat,1);
-                k = 2;
+                k = 5;
                 error = 0;
                 % test data ratio
                 Ratio = 0.3;
@@ -74,7 +76,7 @@ function varargout = Iris_feature(Operation,Global,input)
                     res_mat = predict(knnModel, newdataMat(j,:));
                     disp(res_mat)
                     if(res_mat~=labels(j))
-                        error = error+1;
+                        error = error + 1;
                     end
                 end
                 erate = error/numTest;
