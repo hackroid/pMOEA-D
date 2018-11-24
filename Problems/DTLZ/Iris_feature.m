@@ -33,7 +33,9 @@ function varargout = Iris_feature(Operation,Global,input)
         case 'value'
             PopDec = input;
             [N,D]  = size(PopDec);
-            data = xlsread('./Problems/DTLZ/data.xlsx');
+            dataA = xlsread('./Problems/DTLZ/data.xlsx');
+            tmp_data_order = randperm(size(dataA, 1));
+            data = dataA(tmp_data_order, :);
             dataM = data(:,1:4);
             labels = data(:,5);
             PopObj = PopDec(:,1:2);
@@ -57,7 +59,7 @@ function varargout = Iris_feature(Operation,Global,input)
                 end
                 dataMat=dataM(:,PopDec(i,:)==1);
                 len = size(dataMat,1);
-                k = 2;
+                k = 5;
                 error = 0;
                 % test data ratio
                 Ratio = 0.3;
@@ -68,9 +70,13 @@ function varargout = Iris_feature(Operation,Global,input)
                 newdataMat = (dataMat-repmat(minV,[len,1]))./(repmat(range,[len,1]));
                 for j = 1:numTest
 %                     classifyresult = KNN(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k);
-                    classifyresult = knnclassify(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k,'euclidean','random');
-                    if(classifyresult~=labels(j))
-                        error = error+1;
+                    % classifyresult = knnclassify(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k,'euclidean','random');
+                    knnModel = fitcknn(newdataMat(numTest:len,:),labels(numTest:len,:), 'NumNeighbors',k,'Standardize',1);
+                    disp(knnModel)
+                    res_mat = predict(knnModel, newdataMat(j,:));
+                    disp(res_mat)
+                    if(res_mat~=labels(j))
+                        error = error + 1;
                     end
                 end
                 erate = error/numTest;
