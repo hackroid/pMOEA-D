@@ -1,4 +1,4 @@
-function varargout = Iris_feature(Operation,Global,input)
+function varargout = Breast_tissue(Operation,Global,input)
 % <problem> <DTLZ>
 % Scalable Test Problems for Evolutionary Multi-Objective Optimization
 % operator --- EAreal
@@ -18,7 +18,7 @@ function varargout = Iris_feature(Operation,Global,input)
             % Set the default number of objectives
             Global.M        = 2;
             % Set the default number of decision variables
-            Global.D        = 4;
+            Global.D        = 9;
             % Set the lower bound of each decision variable
             Global.lower    = zeros(1,Global.D);
             % Set the upper bound of each decision variable
@@ -33,11 +33,11 @@ function varargout = Iris_feature(Operation,Global,input)
         case 'value'
             PopDec = input;
             [N,D]  = size(PopDec);
-            dataA = xlsread('./Problems/DTLZ/data.xlsx');
+            dataA = xlsread('./Problems/DTLZ/dataR2.xlsx');
             tmp_data_order = randperm(size(dataA, 1));
             data = dataA(tmp_data_order, :);
-            dataM = data(:,1:4);
-            labels = data(:,5);
+            dataM = data(:,1:9);
+            labels = data(:,10);
             PopObj = PopDec(:,1:2);
             %part = rand(1);
             PopDec(PopDec>0.5)=1;
@@ -55,7 +55,7 @@ function varargout = Iris_feature(Operation,Global,input)
                 c=sum(PopDec(i));
                 if c==0
                     PopDec(i,:) = 1;
-                    c=4;
+                    c=9;
                 end
                 dataMat=dataM(:,PopDec(i,:)==1);
                 len = size(dataMat,1);
@@ -78,7 +78,7 @@ function varargout = Iris_feature(Operation,Global,input)
                     % disp(res_mat)
                   
                 
-                frate = c/4;
+                frate = c/9;
                 PopObj(i,1)=frate;
                 PopObj(i,2)=erate;
                 
