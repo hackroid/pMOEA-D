@@ -30,11 +30,120 @@ function PMOEAD1(Global)
 
     %% Optimization
     while Global.NotTermination(Population)
-       parfor l = 1: 3
-            Optimization(Population,l,B,Z,kind,Global,W);
-       end
+        Population1 = Population;
+        Population2 = Population;
+        num = fix(Global.N/3);
+        for i =1 : num
+             P = B(i,randperm(size(B,2)));
+            % Generate an offspring
+            Offspring = Global.Variation(Population(P(1:2)),1);
+
+            % Update the ideal point
+            Z = min(Z,Offspring.obj);
+
+            % Update the neighbours
+            switch kind
+                case 1
+                    % PBI approach
+                    normW   = sqrt(sum(W(P,:).^2,2));
+                    normP   = sqrt(sum((Population(P).objs-repmat(Z,T,1)).^2,2));
+                    normO   = sqrt(sum((Offspring.obj-Z).^2,2));
+                    CosineP = sum((Population(P).objs-repmat(Z,T,1)).*W(P,:),2)./normW./normP;
+                    CosineO = sum(repmat(Offspring.obj-Z,T,1).*W(P,:),2)./normW./normO;
+                    g_old   = normP.*CosineP + 5*normP.*sqrt(1-CosineP.^2);
+                    g_new   = normO.*CosineO + 5*normO.*sqrt(1-CosineO.^2);
+                case 2
+                    % Tchebycheff approach
+                    g_old = max(abs(Population(P).objs-repmat(Z,T,1)).*W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z),T,1).*W(P,:),[],2);
+                case 3
+                    % Tchebycheff approach with normalization
+                    Zmax  = max(Population.objs,[],1);
+                    g_old = max(abs(Population(P).objs-repmat(Z,T,1))./repmat(Zmax-Z,T,1).*W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z)./(Zmax-Z),T,1).*W(P,:),[],2);
+                case 4
+                    % Modified Tchebycheff approach
+                    g_old = max(abs(Population(P).objs-repmat(Z,T,1))./W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z),T,1)./W(P,:),[],2);
+            end
+            Population(P(g_old>=g_new)) = Offspring;
+        end
+        for i =num : 2*num
+             P = B(i,randperm(size(B,2)));
+            % Generate an offspring
+            Offspring = Global.Variation(Population1(P(1:2)),1);
+
+            % Update the ideal point
+            Z = min(Z,Offspring.obj);
+
+            % Update the neighbours
+            switch kind
+                case 1
+                    % PBI approach
+                    normW   = sqrt(sum(W(P,:).^2,2));
+                    normP   = sqrt(sum((Population1(P).objs-repmat(Z,T,1)).^2,2));
+                    normO   = sqrt(sum((Offspring.obj-Z).^2,2));
+                    CosineP = sum((Population1(P).objs-repmat(Z,T,1)).*W(P,:),2)./normW./normP;
+                    CosineO = sum(repmat(Offspring.obj-Z,T,1).*W(P,:),2)./normW./normO;
+                    g_old   = normP.*CosineP + 5*normP.*sqrt(1-CosineP.^2);
+                    g_new   = normO.*CosineO + 5*normO.*sqrt(1-CosineO.^2);
+                case 2
+                    % Tchebycheff approach
+                    g_old = max(abs(Population1(P).objs-repmat(Z,T,1)).*W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z),T,1).*W(P,:),[],2);
+                case 3
+                    % Tchebycheff approach with normalization
+                    Zmax  = max(Population1.objs,[],1);
+                    g_old = max(abs(Population1(P).objs-repmat(Z,T,1))./repmat(Zmax-Z,T,1).*W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z)./(Zmax-Z),T,1).*W(P,:),[],2);
+                case 4
+                    % Modified Tchebycheff approach
+                    g_old = max(abs(Population1(P).objs-repmat(Z,T,1))./W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z),T,1)./W(P,:),[],2);
+            end
+            Population1(P(g_old>=g_new)) = Offspring;
+        end
+        
+        for i =2*num : Global.N
+             P = B(i,randperm(size(B,2)));
+            % Generate an offspring
+            Offspring = Global.Variation(Population2(P(1:2)),1);
+
+            % Update the ideal point
+            Z = min(Z,Offspring.obj);
+
+            % Update the neighbours
+            switch kind
+                case 1
+                    % PBI approach
+                    normW   = sqrt(sum(W(P,:).^2,2));
+                    normP   = sqrt(sum((Population2(P).objs-repmat(Z,T,1)).^2,2));
+                    normO   = sqrt(sum((Offspring.obj-Z).^2,2));
+                    CosineP = sum((Population2(P).objs-repmat(Z,T,1)).*W(P,:),2)./normW./normP;
+                    CosineO = sum(repmat(Offspring.obj-Z,T,1).*W(P,:),2)./normW./normO;
+                    g_old   = normP.*CosineP + 5*normP.*sqrt(1-CosineP.^2);
+                    g_new   = normO.*CosineO + 5*normO.*sqrt(1-CosineO.^2);
+                case 2
+                    % Tchebycheff approach
+                    g_old = max(abs(Population2(P).objs-repmat(Z,T,1)).*W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z),T,1).*W(P,:),[],2);
+                case 3
+                    % Tchebycheff approach with normalization
+                    Zmax  = max(Population2.objs,[],1);
+                    g_old = max(abs(Population2(P).objs-repmat(Z,T,1))./repmat(Zmax-Z,T,1).*W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z)./(Zmax-Z),T,1).*W(P,:),[],2);
+                case 4
+                    % Modified Tchebycheff approach
+                    g_old = max(abs(Population2(P).objs-repmat(Z,T,1))./W(P,:),[],2);
+                    g_new = max(repmat(abs(Offspring.obj-Z),T,1)./W(P,:),[],2);
+            end
+            Population2(P(g_old>=g_new)) = Offspring;
+        end
+        for i = 1+num : 2*num 
+             Population(i) = Population1(i);
+        end
+        for i = 1+2*num : Global.N 
+             Population(i) = Population2(i);
+        end
     end
-   
-   
-
-
+end
