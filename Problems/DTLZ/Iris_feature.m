@@ -36,8 +36,12 @@ function varargout = Iris_feature(Operation,Global,input)
             dataA = xlsread('./Problems/DTLZ/data.xlsx');
             tmp_data_order = randperm(size(dataA, 1));
             data = dataA(tmp_data_order, :);
-            dataM = data(:,1:4);
-            labels = data(:,5);
+            [m, n] = size(data);
+            feature = n - 1;
+            instance = m;
+            dataM = data(:,1:n-1);
+            labels = data(:,n);
+            % create a matrix for returning
             PopObj = PopDec(:,1:2);
             %part = rand(1);
             PopDec(PopDec>0.5)=1;
@@ -55,24 +59,23 @@ function varargout = Iris_feature(Operation,Global,input)
                 c=sum(PopDec(i));
                 if c==0
                     PopDec(i,:) = 1;
-                    c=4;
+                    c=feature;
                 end
                 dataMat=dataM(:,PopDec(i,:)==1);
-                len = size(dataMat,1);
                 k = 5;
                 error = 0;
                 % test data ratio
                 Ratio = 0.3;
-                numTest = Ratio*len;
+                numTest = Ratio*instance;
                 maxV = max(dataMat);
                 minV = min(dataMat);
                 range = maxV - minV;
-                newdataMat = (dataMat-repmat(minV,[len,1]))./(repmat(range,[len,1]));
+                newdataMat = (dataMat-repmat(minV,[instance,1]))./(repmat(range,[instance,1]));
                 for j = 1:numTest
 %                     classifyresult = KNN(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k);
                     % classifyresult = knnclassify(newdataMat(j,:),newdataMat(numTest:len,:),labels(numTest:len,:),k,'euclidean','random');
-                    knnModel = fitcknn(newdataMat(numTest:len,:),labels(numTest:len,:), 'NumNeighbors',k,'Standardize',1);
-                    disp(knnModel)
+                    knnModel = fitcknn(newdataMat(numTest:instance,:),labels(numTest:instance,:), 'NumNeighbors',k,'Standardize',1);
+                    % disp(knnModel)
                     res_mat = predict(knnModel, newdataMat(j,:));
                     disp(res_mat)
                     if(res_mat~=labels(j))
@@ -80,7 +83,7 @@ function varargout = Iris_feature(Operation,Global,input)
                     end
                 end
                 erate = error/numTest;
-                frate = c/4;
+                frate = c/feature;
                 PopObj(i,1) =erate;
                 PopObj(i,2)=frate;
             end
