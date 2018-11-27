@@ -21,4 +21,6 @@ function NSGAII(Global)
         Offspring  = Global.Variation(Population(MatingPool));
         [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Global.N);
     end
+    FrontNo = NDSort(Population.objs,N);
+    Population = Pupulation(FrontNo==1);
 end
