@@ -42,7 +42,9 @@ function varargout = Breast_tissue(Operation,Global,input)
             %part = rand(1);
             PopDec(PopDec>0.5)=1;
             PopDec(PopDec<=0.5)=0;
-            for i = 1:N
+            sliced(:,1)=[0,0];
+            parfor i = 1:N
+                popDec = PopDec;
                 dataMat =[];
                 c = 0;
 %                 for j = 1:D
@@ -52,12 +54,12 @@ function varargout = Breast_tissue(Operation,Global,input)
 % %                     end
 %                     
 %                 end
-                c=sum(PopDec(i));
+                c=sum(popDec(i));
                 if c==0
-                    PopDec(i,:) = 1;
+                    popDec(i,:) = 1;
                     c=9;
                 end
-                dataMat=dataM(:,PopDec(i,:)==1);
+                dataMat=dataM(:,popDec(i,:)==1);
                 len = size(dataMat,1);
                 k = 5;
                 error = 0;
@@ -79,9 +81,11 @@ function varargout = Breast_tissue(Operation,Global,input)
                   
                 
                 frate = c/9;
-                PopObj(i,1)=frate;
-                PopObj(i,2)=erate;
+                sliced(:,i)=[frate,erate];
                 
+            end
+            for i = 1:N
+                PopObj(i,:)=sliced(:,i)';
             end
             PopCon = [];
             
