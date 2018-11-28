@@ -54,7 +54,7 @@ function varargout = Breast_tissue(Operation,Global,input)
 % %                     end
 %                     
 %                 end
-                c=sum(popDec(i));
+                c=sum(popDec(i,:));
                 if c==0
                     popDec(i,:) = 1;
                     c=9;
