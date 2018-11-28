@@ -55,7 +55,7 @@ classdef GLOBAL < handle
         D;                              % Number of variables
         lower;                          % Lower bound of each decision variable
         upper;                          % Upper bound of each decision variable
-        evaluation = 10000;             % Maximum number of evaluations
+        evaluation = 3000;             % Maximum number of evaluations
         operator   = @EAreal;         	% Operator function
     end
     properties(SetAccess = ?INDIVIDUAL)
