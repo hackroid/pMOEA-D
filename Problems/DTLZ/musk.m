@@ -76,7 +76,7 @@ function varargout = musk(Operation,Global,input)
                     knnModel = fitcknn(newdataMat(numTest:len,:),labels(numTest:len,:), 'NumNeighbors',k,'Standardize',1);
                     disp(knnModel)
                     cvmdl = crossval(knnModel);
-                    erate = kfoldLoss(cvmdl);
+                    erate = kfoldLoss(cvmdl,'lossfun','classiferror');
                     % disp(res_mat)
                   
                 
