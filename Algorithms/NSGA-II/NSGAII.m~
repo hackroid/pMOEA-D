@@ -22,8 +22,7 @@ function NSGAII(Global)
         [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Global.N);
         if Global.evaluated >= Global.evaluation
             FrontNo = NDSort(Population.objs,Global.N);
-            P = Population(FrontNo==1);
-            Population(FrontNo~=1)=P(1);
+            P = Population()
         end
     end
     
