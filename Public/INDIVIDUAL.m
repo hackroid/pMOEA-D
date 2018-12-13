@@ -72,6 +72,7 @@ classdef INDIVIDUAL < handle
                     end
                     % Calculte the objective and constraint values
                     [Decs,Objs,Cons] = Global.problem('value',Global,Decs);
+                    disp(Decs);
                     if isempty(Cons)
                         Cons = zeros(length(obj),1);
                     end

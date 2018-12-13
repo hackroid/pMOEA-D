@@ -35,20 +35,14 @@ function PMOEAD1(Global)
         num = fix(Global.N/3);
         
         sliced(:,1) = Population;
-        for i = 1:3
+        parfor i = 1:3
             Z_ = Z;
             B_ = B;
-            W_ = W;
-            T_ = T;
-            Global_ = Global;
             Pop = Population;
-            sliced(:,i) = Optimization(Global_,Pop, Z_, B_, W_, T_, i, num ,kind);
+            sliced(:,i) = Optimization(Global,Pop, Z_, B_, W_, i, num);
         end
-        temp = sliced(:,1)';
-        Population(1:num) = temp(1:num);
-        temp = sliced(:,2)';
-        Population(num+1:2*num) = temp(num+1:2*num);
-        temp = sliced(:,3)';
-        Population(2*num+1:3*num) = temp(2*num+1:3*num);
+        Population(1:num) = sliced(:,1)';
+        Population(num+1:2*num) = sliced(:,2)';
+        Population(num)
     end
 end
