@@ -12,8 +12,8 @@ OBJ_NUM = 2
 
 def Initial(population_size, dimension, file_name):
     population = generate(population_size, dimension)
-    weight_vecotr = generate_weightvector(population_size)
+    weight_vector = generate_weightvector(population_size)
     neighbours = get_neighbour(population_size)
     obj, z = evaluate_solution(population, file_name)
-    fitness = evaluate_fitness(population, obj)
-    return population, weight_vecotr, neighbours, obj, z, fitness
+    fitness = evaluate_fitness(population, obj, weight_vector)
+    return population, weight_vector, neighbours, obj, z, fitness

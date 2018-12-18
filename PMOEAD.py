@@ -16,24 +16,26 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
         index = begin
         while index < end:
             p = random.sample(range(0, negihbour_num), 2)  # select two parents from its neighbour
-            indiviual = CrossOver(population[p[0]], population[p[1]], dimension)
+            p1 = int(neighbours[index][p[0]])
+            p2 = int(neighbours[index][p[1]])
+            indiviual = CrossOver(population[p1], population[p2], dimension)
             i_obj = evaluate_single(indiviual, file_name)
             if i_obj[0] < z[0]:
-                z[0] = obj[0]
+                z[0] = i_obj[0]
             if i_obj[1] < z[1]:
-                z[1] = obj[1]
-            update_neighbour(population, neighbours[index], indiviual, obj, fitness)
-            index +=1
+                z[1] = i_obj[1]
+            update_neighbour(population, neighbours[index], indiviual, obj, fitness, weight_vecotr)
+            index += 1
         print(f'iteration {iteration}')
     return population, obj
 
 
-def update_neighbour(population, neighbour, indiviual, obj, fitness):
+def update_neighbour(population, neighbour, indiviual, obj, fitness, weight_vector):
     s = numpy.sum(indiviual)
-    ratio = 1 / (len(population) - 1)
+    population_num = len(population)
     for i in neighbour:
         index = int(i)
-        temp = evaluate_singlefitness(obj[index][0], obj[index][1], s, floor(index * ratio))
+        temp = evaluate_singlefitness(obj[index][0], obj[index][1], s, int(weight_vector[index][0]*population_num))
         if fitness[index] > temp:
             population[index] = deepcopy(indiviual)
             fitness[index] = temp
