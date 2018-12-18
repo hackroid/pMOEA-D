@@ -1,23 +1,25 @@
 import matplotlib.pyplot as plt
 
+
 def get_pf(obj, file_name):
-    result ={}
+    result = {}
     for i in range(len(obj)):
         frate = obj[i][0]
         erate = obj[i][1]
         for j in range(len(obj)):
-            if obj[j][0]> frate and obj[j][1]> erate:
+            if obj[j][0] > frate and obj[j][1] > erate:
                 obj[j][0] = frate
                 obj[j][1] = erate
-    x= []
+    x = []
     y = []
     for i in range(len(obj)):
         frate = obj[i][0]
         erate = obj[i][1]
-        result[frate] =erate
+        result[frate] = erate
     for key in result:
-        x.append(key)
-        y.append(result[key])
+        if key!=0:
+            x.append(key)
+            y.append(result[key])
     print(result)
     plt.title(file_name)
 
