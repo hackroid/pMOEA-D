@@ -5,7 +5,7 @@ from evaluate_solution import evaluate_singlefitness, evaluate_solution, evaluat
 import numpy
 from copy import deepcopy
 from math import floor
-
+from PF import get_pf
 
 def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
     population, weight_vecotr, neighbours, obj, z, fitness = Initial(population_size, dimension, file_name)

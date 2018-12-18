@@ -12,7 +12,6 @@ def evaluate_single(solution, file_name):
     del_index = get_delindex(solution)
     feature_count = len(solution) - len(del_index)
     data = numpy.delete(data, del_index, axis=1)
-    numpy.random.shuffle(data)
     label = data[:, -1]
     data = numpy.delete(data, -1, axis=1)
     traning_num = int(Ratio * len(data))
@@ -65,13 +64,10 @@ def evaluate_fitness(solutions, obj, weight_vector):
     solution_num = len(solutions)
     for i in range(solution_num):
         s = numpy.sum(solutions[i])
-        nref = int(weight_vector[i][0]*solution_num)
+        nref = int(weight_vector[i][0] * solution_num)
         fitness[i] = evaluate_singlefitness(obj[i][0], obj[i][1], s, nref)
     return fitness
 
 
 if __name__ == '__main__':
-    solution = numpy.random.randint(0, 2, (10, 166))
-    for i in range(10):
-        print(solution[i])
-        print(evaluate_single(solution[i], 'data.txt'))
+    print(evaluate_single([1, 1, 1, 1], 'irs.txt'))
