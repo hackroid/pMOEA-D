@@ -1,13 +1,13 @@
-classdef GLOBAL < handle
-%GLOBAL - The class of the experimental setting
+classdef GLOBAL2 < handle
+%GLOBAL2 - The class of the experimental setting
 %
-%   This is the class of the experimental setting. An object of GLOBAL
+%   This is the class of the experimental setting. An object of GLOBAL2
 %   class stores all the propeties used in the algorithm, including the
 %   population size, number of objectives, maximum number of evaluations
 %   and so on. The object also has several methods which can be invoked by
 %   algorithm, problem and operator functions.
 %
-% GLOBAL properties:
+% GLOBAL2 properties:
 %   N               <public>	population size
 %   M               <read-only>	number of objectives
 %   D               <read-only>	number of variables
@@ -28,8 +28,8 @@ classdef GLOBAL < handle
 %   mode            <read-only>	run mode (1.show result 2.save result 3.run outputFcn)
 %   outputFcn    	<read-only>	function invoked after each generation when mode = 3
 %
-% GLOBAL methods:
-%   GLOBAL          <public>    the constructor, all the properties will be
+% GLOBAL22 methods:
+%   GLOBAL2          <public>    the constructor, all the properties will be
 %                               set when the object is creating
 %   Start           <public>    start running the algorithm
 %   Initialization  <public>    generate an initial random population
@@ -72,18 +72,18 @@ classdef GLOBAL < handle
         PF;                             % True Pareto front
         parameter  = struct();      	% Parameters of functions specified by users
         mode       = 1;                 % Run mode (1.show result 2.save result 3.run outputFcn)
-        outputFcn  = @GLOBAL.show;  	% Function invoked after each generation when mode = 3
+        outputFcn  = @GLOBAL2.show;  	% Function invoked after each generation when mode = 3
     end
     methods
         %% Constructor
-        function obj = GLOBAL(varargin)
-        %GLOBAL - Constructor of GLOBAL class
+        function obj = GLOBAL2(varargin)
+        %GLOBAL2 - Constructor of GLOBAL2 class
         %
-        %   GLOBAL('-Name',Value,'-Name',Value,...) returns an object with
+        %   GLOBAL2('-Name',Value,'-Name',Value,...) returns an object with
         %   the properties specified by the inputs.
         %
         %   Example:
-        %       GLOBAL('-algorithm',@NSGAII,'-problem',@DTLZ2,'-N',100,...
+        %       GLOBAL2('-algorithm',@NSGAII,'-problem',@DTLZ2,'-N',100,...
         %              '-M',2,'-D',10)
         
             % Initialise the parameters which can be specified by user
@@ -110,9 +110,9 @@ classdef GLOBAL < handle
             obj.Set(true);
             % Determine the run mode
             if obj.mode == 1
-                obj.outputFcn = @GLOBAL.show;
+                obj.outputFcn = @GLOBAL2.show;
             elseif obj.mode == 2
-                obj.outputFcn = @GLOBAL.save;
+                obj.outputFcn = @GLOBAL2.save;
             end
             % Add the folders of the algorithm, problem and operator to the
             % top of the search path
@@ -127,7 +127,7 @@ classdef GLOBAL < handle
         %Start - Start running the algorithm
         %
         %   obj.Start() runs the algorithm with the defined setting. This
-        %   method of one GLOBAL object can only be invoked once.
+        %   method of one GLOBAL2 object can only be invoked once.
         %
         %   Example:
         %       obj.Start()
@@ -138,7 +138,7 @@ classdef GLOBAL < handle
                     tic;
                     obj.algorithm(obj);
                 catch err
-                    if strcmp(err.identifier,'GLOBAL:Termination')
+                    if strcmp(err.identifier,'GLOBAL2:Termination')
                         return;
                     else
                         rethrow(err);
@@ -182,8 +182,8 @@ classdef GLOBAL < handle
         %
         %   This function should be invoked after each generation. The
         %   function obj.outputFcn will be invoked when obj.NotTermination
-        %   has been invoked. obj.outputFcn is equal to @GLOBAL.show when
-        %   obj.mode = 1, and obj.outputFcn is equal to @GLOBAL.save when
+        %   has been invoked. obj.outputFcn is equal to @GLOBAL2.show when
+        %   obj.mode = 1, and obj.outputFcn is equal to @GLOBAL2.save when
         %   obj.mode = 2.
         %
         %   The runtime of running this function and obj.outputFcn is not
@@ -203,7 +203,7 @@ classdef GLOBAL < handle
             obj.outputFcn(obj);
             % Detect whether the number of evaluations has exceeded
             notermination = obj.evaluated < obj.evaluation;
-            assert(notermination,'GLOBAL:Termination','Algorithm has terminated');
+            assert(notermination,'GLOBAL2:Termination','Algorithm has terminated');
             tic;
         end
         %% Generate offspring population
@@ -470,7 +470,7 @@ classdef GLOBAL < handle
                 Population   = obj.result{end}(Feasible(NonDominated));
                 % Calculate the metric values
                 Metrics   = {@IGD};
-                Score     = cellfun(@(S)GLOBAL.Metric(S,Population,obj.PF),Metrics,'UniformOutput',false);
+                Score     = cellfun(@(S)GLOBAL2.Metric(S,Population,obj.PF),Metrics,'UniformOutput',false);
                 MetricStr = cellfun(@(S)[func2str(S),' : %.4e  '],Metrics,'UniformOutput',false);
                 % Display the results
                 figure('NumberTitle','off','UserData',struct(),...
@@ -479,14 +479,14 @@ classdef GLOBAL < handle
                 Draw(Population.objs);
                 % Add new menus to the figure
                 top = uimenu(gcf,'Label','Data Source');
-                uimenu(top,'Label','Result (PF)',     'CallBack',{@(hObject,~,obj,P)eval('cla;Draw(P.objs);GLOBAL.cb_menu(hObject);'),obj,Population},'Checked','on');
-                uimenu(top,'Label','Result (PS)',     'CallBack',{@(hObject,~,obj,P)eval('cla;Draw(P.decs);GLOBAL.cb_menu(hObject);'),obj,Population});
-                uimenu(top,'Label','Result (Special)','CallBack',{@(hObject,~,obj,P)eval('obj.problem(''draw'',obj,P.decs);GLOBAL.cb_menu(hObject);'),obj,Population});
-                uimenu(top,'Label','True PF',         'CallBack',{@(hObject,~,obj)eval('cla;Draw(obj.PF);GLOBAL.cb_menu(hObject);'),obj},'Separator','on');
-                uimenu(top,'Label','IGD',             'CallBack',{@GLOBAL.cb_metric,obj,@IGD},'Separator','on');
-                uimenu(top,'Label','Hypervolume',     'CallBack',{@GLOBAL.cb_metric,obj,@HV});
-                uimenu(top,'Label','GD',              'CallBack',{@GLOBAL.cb_metric,obj,@GD});
-                uimenu(top,'Label','Spacing',         'CallBack',{@GLOBAL.cb_metric,obj,@Spacing});
+                uimenu(top,'Label','Result (PF)',     'CallBack',{@(hObject,~,obj,P)eval('cla;Draw(P.objs);GLOBAL2.cb_menu(hObject);'),obj,Population},'Checked','on');
+                uimenu(top,'Label','Result (PS)',     'CallBack',{@(hObject,~,obj,P)eval('cla;Draw(P.decs);GLOBAL2.cb_menu(hObject);'),obj,Population});
+                uimenu(top,'Label','Result (Special)','CallBack',{@(hObject,~,obj,P)eval('obj.problem(''draw'',obj,P.decs);GLOBAL2.cb_menu(hObject);'),obj,Population});
+                uimenu(top,'Label','True PF',         'CallBack',{@(hObject,~,obj)eval('cla;Draw(obj.PF);GLOBAL2.cb_menu(hObject);'),obj},'Separator','on');
+                uimenu(top,'Label','IGD',             'CallBack',{@GLOBAL2.cb_metric,obj,@IGD},'Separator','on');
+                uimenu(top,'Label','Hypervolume',     'CallBack',{@GLOBAL2.cb_metric,obj,@HV});
+                uimenu(top,'Label','GD',              'CallBack',{@GLOBAL2.cb_metric,obj,@GD});
+                uimenu(top,'Label','Spacing',         'CallBack',{@GLOBAL2.cb_metric,obj,@Spacing});
             end
         end
         function cb_metric(hObject,eventdata,obj,metric)
@@ -496,7 +496,7 @@ classdef GLOBAL < handle
             if ~isfield(MetricValues,func2str(metric)) 
                 tempText = text('Units','normalized','Position',[.4 .5 0],'String','Please wait ... ...'); drawnow();
                 MetricValues.(metricName)(:,1) = obj.result(:,1);
-                MetricValues.(metricName)(:,2) = cellfun(@(S)GLOBAL.Metric(metric,S,obj.PF),obj.result(:,2),'UniformOutput',false);
+                MetricValues.(metricName)(:,2) = cellfun(@(S)GLOBAL2.Metric(metric,S,obj.PF),obj.result(:,2),'UniformOutput',false);
                 set(gcbf,'UserData',MetricValues);
                 delete(tempText);
             end
@@ -504,7 +504,7 @@ classdef GLOBAL < handle
             cla; Draw(cell2mat(MetricValues.(metricName)),'-k.');
             xlabel('Number of Evaluations');
             ylabel(metricName);
-            GLOBAL.cb_menu(hObject);
+            GLOBAL2.cb_menu(hObject);
         end
         function cb_menu(hObject)
             % Switch the selected menu
