@@ -15,11 +15,11 @@ def evaluate_single(solution, file_name):
     numpy.random.shuffle(data)
     label = data[:, -1]
     data = numpy.delete(data, -1, axis=1)
-    traning = int(Ratio * len(data))
-    traning_data = data[:traning]
-    testing_data = data[traning:]
-    traning_label = label[:traning]
-    testing_label = label[traning:]
+    traning_num = int(Ratio * len(data))
+    traning_data = data[:traning_num]
+    testing_data = data[traning_num:]
+    traning_label = label[:traning_num]
+    testing_label = label[traning_num:]
     error_count = 0
     total_count = 0
     for i in range(len(testing_data)):
@@ -29,7 +29,7 @@ def evaluate_single(solution, file_name):
             error_count += 1
         total_count += 1
     frate = feature_count / len(solution)
-    erate = feature_count / total_count
+    erate = error_count / total_count
     return [frate, erate]
 
 
@@ -60,18 +60,18 @@ def evaluate_singlefitness(frate, erate, s, nref):
     return erate + 100 * max(s - nref, 0) + Alpha * frate
 
 
-# if __name__ == '__main__':
-#     solution = numpy.random.randint(0, 2, (10, 166))
-#     for i in range(10):
-#         print(solution[i])
-#         print(evaluate(solution[i]))
-
-def evaluate_fitness(solutions, obj):
+def evaluate_fitness(solutions, obj, weight_vector):
     fitness = numpy.zeros(len(solutions))
     solution_num = len(solutions)
-    ratio = 1 / (solution_num - 1)
     for i in range(solution_num):
         s = numpy.sum(solutions[i])
-        nref = i  # reference point choose i features
-        fitness[i] =evaluate_singlefitness(obj[i][0],obj[i][1],s,nref)
+        nref = int(weight_vector[i][0]*solution_num)
+        fitness[i] = evaluate_singlefitness(obj[i][0], obj[i][1], s, nref)
     return fitness
+
+
+if __name__ == '__main__':
+    solution = numpy.random.randint(0, 2, (10, 166))
+    for i in range(10):
+        print(solution[i])
+        print(evaluate_single(solution[i], 'data.txt'))

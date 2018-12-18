@@ -2,3 +2,5 @@
 .git/
 test.py
 .DS_Store
+/venv
+/venv/*
