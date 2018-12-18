@@ -1,1 +1,0 @@
-main('-algorithm',@PMOEAD1,'-problem',@DTLZ1,'-evaluation',10000)
