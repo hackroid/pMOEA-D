@@ -1,20 +1,24 @@
 import matplotlib.pyplot as plt
 
 def get_pf(obj):
-    result = {}
+    result ={}
     for i in range(len(obj)):
         frate = obj[i][0]
         erate = obj[i][1]
-        if frate not in result:
-            result[frate] = erate
-        elif result[frate] > erate:
-            result[frate] = erate
-    print(result)
-    x=[]
-    y=[]
+        for j in range(len(obj)):
+            if obj[j][0]> frate and obj[j][1]> erate:
+                obj[j][0] = frate
+                obj[j][1] = erate
+    x= []
+    y = []
+    for i in range(len(obj)):
+        frate = obj[i][0]
+        erate = obj[i][1]
+        result[frate] =erate
     for key in result:
-        y.append(result[key])
         x.append(key)
+        y.append(result[key])
+    print(result)
     plt.title(u'PF for clean1')
 
     plt.xlabel('fratio')
