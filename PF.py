@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def get_pf(obj):
+def get_pf(obj, file_name):
     result ={}
     for i in range(len(obj)):
         frate = obj[i][0]
@@ -19,7 +19,7 @@ def get_pf(obj):
         x.append(key)
         y.append(result[key])
     print(result)
-    plt.title(u'PF for clean1')
+    plt.title(file_name)
 
     plt.xlabel('fratio')
     plt.ylabel('erate')

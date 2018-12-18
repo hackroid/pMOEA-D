@@ -4,8 +4,7 @@ from Variation import CrossOver
 from evaluate_solution import evaluate_singlefitness, evaluate_solution, evaluate_single
 import numpy
 from copy import deepcopy
-from math import floor
-from PF import get_pf
+
 
 def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
     population, weight_vecotr, neighbours, obj, z, fitness = Initial(population_size, dimension, file_name)
@@ -35,7 +34,7 @@ def update_neighbour(population, neighbour, indiviual, obj, fitness, weight_vect
     population_num = len(population)
     for i in neighbour:
         index = int(i)
-        temp = evaluate_singlefitness(obj[index][0], obj[index][1], s, int(weight_vector[index][0]*population_num))
+        temp = evaluate_singlefitness(obj[index][0], obj[index][1], s, int(weight_vector[index][0] * population_num))
         if fitness[index] > temp:
             population[index] = deepcopy(indiviual)
             fitness[index] = temp
