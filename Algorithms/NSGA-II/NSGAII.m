@@ -16,15 +16,15 @@ function NSGAII(Global)
     [~,FrontNo,CrowdDis] = EnvironmentalSelection(Population,Global.N);
 
     %% Optimization
-    while Global.NotTermination(Population)
-        MatingPool = TournamentSelection(2,Global.N,FrontNo,-CrowdDis);
-        Offspring  = Global.Variation(Population(MatingPool));
-        [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Global.N);
-        if Global.evaluated >= Global.evaluation
-            FrontNo = NDSort(Population.objs,Global.N);
-            P = Population(FrontNo==1);
-            Population(FrontNo~=1)=P(1);
-        end
-    end
+     while Global.NotTermination(Population)
+         MatingPool = TournamentSelection(2,Global.N,FrontNo,-CrowdDis);
+         Offspring  = Global.Variation(Population(MatingPool));
+         [Population,FrontNo,CrowdDis] = EnvironmentalSelection([Population,Offspring],Global.N);
+         if Global.evaluated >= Global.evaluation
+             FrontNo = NDSort(Population.objs,Global.N);
+             P = Population(FrontNo==1);
+             Population(FrontNo~=1)=P(1);
+         end
+     end
     
 end
