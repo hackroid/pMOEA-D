@@ -8,7 +8,7 @@ import numpy
 
 
 def generate_weightvector(population_num):
-    weight_vector = numpy.zeros((population_num, 2))
+    weight_vector = [[0 for _ in range(2)] for _ in range(population_num)]
     ratio = 1 / population_num
     for i in range(population_num):
         weight_vector[i][0] = (i+1) * ratio  # The reference point is on the fratio

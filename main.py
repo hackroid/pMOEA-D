@@ -1,8 +1,8 @@
 from PMOEAD import PMOEAD
 from PF import get_pf
 if __name__ == '__main__':
-    file_name = 'irs.txt'
-    feature_num = 4
+    file_name = 'clean1.txt'
+    feature_num = 166
     population_size = 100
     iteration_num = 100
     begin = 0

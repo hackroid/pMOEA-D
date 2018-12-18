@@ -41,7 +41,7 @@ def get_delindex(solution):
 
 
 def evaluate_solution(solution, file_Name):
-    obj = numpy.zeros((len(solution), 2))
+    obj = [ [0 for _ in range(2)] for _ in range(len(solution))]
     min_erate = INF
     min_frate = INF
     for i in range(len(solution)):
@@ -60,10 +60,10 @@ def evaluate_singlefitness(frate, erate, s, nref):
 
 
 def evaluate_fitness(solutions, obj, weight_vector):
-    fitness = numpy.zeros(len(solutions))
     solution_num = len(solutions)
+    fitness = [0 for _ in range(solution_num)]
     for i in range(solution_num):
-        s = numpy.sum(solutions[i])
+        s = sum(solutions[i])
         nref = int(weight_vector[i][0] * solution_num)
         fitness[i] = evaluate_singlefitness(obj[i][0], obj[i][1], s, nref)
     return fitness

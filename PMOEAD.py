@@ -30,7 +30,7 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
 
 
 def update_neighbour(population, neighbour, indiviual, obj, fitness, weight_vector):
-    s = numpy.sum(indiviual)
+    s = sum(indiviual)
     population_num = len(population)
     for i in neighbour:
         index = int(i)
