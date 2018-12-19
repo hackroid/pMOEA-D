@@ -1,5 +1,5 @@
 import numpy
-from KNN import kNNClassify
+from KNN import knn_classify
 import copy
 
 K = 10
@@ -22,7 +22,7 @@ def evaluate_single(solution, data):
     error_count = 0
     total_count = 0
     for i in range(len(testing_data)):
-        tag = kNNClassify(testing_data[i], training_data, training_label, K)
+        tag = knn_classify(testing_data[i], training_data, training_label, K)
         # print(f'predict tag: {tag}  real label: {testing_label[i]}')
         if tag != testing_label[i]:
             error_count += 1

@@ -1,10 +1,5 @@
-import numpy
-
-'''
-    Generate population_num weight vectors.
-    Split the interval into population_num -1 parts
-    
-'''
+# Generate population_num weight vectors.
+# Split the interval into population_num -1 parts
 
 
 def generate_weightvector(population_num):
