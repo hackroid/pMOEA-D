@@ -1,14 +1,13 @@
 import numpy
 from KNN import kNNClassify
-
+import  copy
 K = 10
 Ratio = 0.7
 INF = 233
 Alpha = 1  # two objects are the same important
 
 
-def evaluate_single(solution, file_name):
-    data = numpy.loadtxt(file_name)
+def evaluate_single(solution, data):
     del_index = get_delindex(solution)
     feature_count = len(solution) - len(del_index)
     data = numpy.delete(data, del_index, axis=1)
@@ -40,12 +39,12 @@ def get_delindex(solution):
     return del_index
 
 
-def evaluate_solution(solution, file_Name):
+def evaluate_solution(solution, data):
     obj = [ [0 for _ in range(2)] for _ in range(len(solution))]
     min_erate = INF
     min_frate = INF
     for i in range(len(solution)):
-        result = evaluate_single(solution[i], file_Name)
+        result = evaluate_single(solution[i], copy.copy(data))
         obj[i][0] = result[0]
         obj[i][1] = result[1]
         if result[0] < min_frate:

@@ -3,7 +3,7 @@ from PF import get_pf
 if __name__ == '__main__':
     file_name = 'clean1.txt'
     feature_num = 166
-    population_size = 100
+    population_size = 200
     iteration_num = 100
     begin = 0
     end = population_size
