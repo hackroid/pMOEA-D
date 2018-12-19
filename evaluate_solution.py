@@ -1,18 +1,16 @@
 import numpy
 from KNN import kNNClassify
-
+import  copy
 K = 10
 Ratio = 0.7
 INF = 233
 Alpha = 1  # two objects are the same important
 
 
-def evaluate_single(solution, file_name):
-    data = numpy.loadtxt(file_name)
+def evaluate_single(solution, data):
     del_index = get_delindex(solution)
     feature_count = len(solution) - len(del_index)
     data = numpy.delete(data, del_index, axis=1)
-    numpy.random.shuffle(data)
     label = data[:, -1]
     data = numpy.delete(data, -1, axis=1)
     traning_num = int(Ratio * len(data))
@@ -41,12 +39,12 @@ def get_delindex(solution):
     return del_index
 
 
-def evaluate_solution(solution, file_Name):
-    obj = numpy.zeros((len(solution), 2))
+def evaluate_solution(solution, data):
+    obj = [ [0 for _ in range(2)] for _ in range(len(solution))]
     min_erate = INF
     min_frate = INF
     for i in range(len(solution)):
-        result = evaluate_single(solution[i], file_Name)
+        result = evaluate_single(solution[i], copy.copy(data))
         obj[i][0] = result[0]
         obj[i][1] = result[1]
         if result[0] < min_frate:
@@ -61,17 +59,14 @@ def evaluate_singlefitness(frate, erate, s, nref):
 
 
 def evaluate_fitness(solutions, obj, weight_vector):
-    fitness = numpy.zeros(len(solutions))
     solution_num = len(solutions)
+    fitness = [0 for _ in range(solution_num)]
     for i in range(solution_num):
-        s = numpy.sum(solutions[i])
-        nref = int(weight_vector[i][0]*solution_num)
+        s = sum(solutions[i])
+        nref = int(weight_vector[i][0] * solution_num)
         fitness[i] = evaluate_singlefitness(obj[i][0], obj[i][1], s, nref)
     return fitness
 
 
 if __name__ == '__main__':
-    solution = numpy.random.randint(0, 2, (10, 166))
-    for i in range(10):
-        print(solution[i])
-        print(evaluate_single(solution[i], 'data.txt'))
+    print(evaluate_single([1, 1, 1, 1], 'irs.txt'))

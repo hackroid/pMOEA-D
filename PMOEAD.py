@@ -3,12 +3,10 @@ import random
 from Variation import CrossOver
 from evaluate_solution import evaluate_singlefitness, evaluate_solution, evaluate_single
 import numpy
-from copy import deepcopy
-from math import floor
-
+from copy import copy
 
 def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
-    population, weight_vecotr, neighbours, obj, z, fitness = Initial(population_size, dimension, file_name)
+    population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
     iteration = 0
     negihbour_num = len(neighbours[0])
     while iteration < max_iteration:
@@ -19,7 +17,7 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
             p1 = int(neighbours[index][p[0]])
             p2 = int(neighbours[index][p[1]])
             indiviual = CrossOver(population[p1], population[p2], dimension)
-            i_obj = evaluate_single(indiviual, file_name)
+            i_obj = evaluate_single(indiviual,copy(data))
             if i_obj[0] < z[0]:
                 z[0] = i_obj[0]
             if i_obj[1] < z[1]:
@@ -31,11 +29,11 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
 
 
 def update_neighbour(population, neighbour, indiviual, obj, fitness, weight_vector):
-    s = numpy.sum(indiviual)
+    s = sum(indiviual)
     population_num = len(population)
     for i in neighbour:
         index = int(i)
-        temp = evaluate_singlefitness(obj[index][0], obj[index][1], s, int(weight_vector[index][0]*population_num))
+        temp = evaluate_singlefitness(obj[index][0], obj[index][1], s, int(weight_vector[index][0] * population_num))
         if fitness[index] > temp:
-            population[index] = deepcopy(indiviual)
+            population[index] = copy(indiviual)
             fitness[index] = temp
