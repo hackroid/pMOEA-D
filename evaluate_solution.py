@@ -1,6 +1,7 @@
 import numpy
-from KNN import kNNClassify
-import  copy
+from KNN import knn_classify
+import copy
+
 K = 10
 Ratio = 0.7
 INF = 233
@@ -13,15 +14,15 @@ def evaluate_single(solution, data):
     data = numpy.delete(data, del_index, axis=1)
     label = data[:, -1]
     data = numpy.delete(data, -1, axis=1)
-    traning_num = int(Ratio * len(data))
-    traning_data = data[:traning_num]
-    testing_data = data[traning_num:]
-    traning_label = label[:traning_num]
-    testing_label = label[traning_num:]
+    training_num = int(Ratio * len(data))
+    training_data = data[:training_num]
+    testing_data = data[training_num:]
+    training_label = label[:training_num]
+    testing_label = label[training_num:]
     error_count = 0
     total_count = 0
     for i in range(len(testing_data)):
-        tag = kNNClassify(testing_data[i], traning_data, traning_label, K)
+        tag = knn_classify(testing_data[i], training_data, training_label, K)
         # print(f'predict tag: {tag}  real label: {testing_label[i]}')
         if tag != testing_label[i]:
             error_count += 1
@@ -40,7 +41,7 @@ def get_delindex(solution):
 
 
 def evaluate_solution(solution, data):
-    obj = [ [0 for _ in range(2)] for _ in range(len(solution))]
+    obj = [[0 for _ in range(2)] for _ in range(len(solution))]
     min_erate = INF
     min_frate = INF
     for i in range(len(solution)):

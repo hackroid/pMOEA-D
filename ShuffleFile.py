@@ -1,9 +1,9 @@
 import random
 
 
-def shuffle(fileName):
+def shuffle(file_name):
     content = []
-    with open(fileName, 'r+') as f:
+    with open(file_name, 'r+') as f:
         for line in f:
             content.append(line)
     random.shuffle(content)

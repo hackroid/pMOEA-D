@@ -1,8 +1,8 @@
 import numpy
 
 
-def kNNClassify(newInput, dataSet, labels, k):
-    numSamples = dataSet.shape[0]  # shape[0]表示行数
+def knn_classify(new_input, data_set, labels, k):
+    numSamples = data_set.shape[0]  # shape[0]表示行数
 
     # # step 1: 计算距离[
     # 假如：
@@ -35,8 +35,8 @@ def kNNClassify(newInput, dataSet, labels, k):
     #
     # ]
     # tile(A, reps): 构造一个矩阵，通过A重复reps次得到
-    # the following copy numSamples rows for dataSet
-    diff = numpy.tile(newInput, (numSamples, 1)) - dataSet  # 按元素求差值
+    # the following copy numSamples rows for data_set
+    diff = numpy.tile(new_input, (numSamples, 1)) - data_set  # 按元素求差值
     squaredDiff = diff ** 2  # 将差值平方
     squaredDist = numpy.sum(squaredDiff, axis=1)  # 按行累加
     distance = squaredDist ** 0.5  # 将差值平方和求开方，即得距离

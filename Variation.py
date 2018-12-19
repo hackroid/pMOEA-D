@@ -4,7 +4,7 @@ ita = 20
 
 
 # 输入需要交叉互换的p1和p2
-def CrossOver(p1, p2, N):
+def cross_over(p1, p2, N):
     chil1 = numpy.zeros(N)
     chil2 = numpy.zeros(N)
     for i in range(N):
@@ -17,10 +17,10 @@ def CrossOver(p1, p2, N):
         chil2[i] = 0.5 * ((1 + beta) * p1[i] + (1 - beta) * p2[i])
     low = numpy.zeros(N)
     up = numpy.ones(N)
-    return mutPolynomialBounded(chil1, 1, low, up, 0.5)
+    return mut_polynomial_bounded(chil1, 1, low, up, 0.5)
 
 
-def mutPolynomialBounded(individual, eta, low, up, indpb):
+def mut_polynomial_bounded(individual, eta, low, up, indpb):
     """Polynomial mutation as implemented in original NSGA-II algorithm in
     C by Deb.
     :param individual: :term:`Sequence <sequence>` individual to be mutated.
@@ -62,6 +62,6 @@ def mutPolynomialBounded(individual, eta, low, up, indpb):
     return individual
 
 # if __name__ == '__main__':
-#     p = CrossOver([1,0,1,1,1,0], [0,0,0,1,0,1], 6)
+#     p = cross_over([1,0,1,1,1,0], [0,0,0,1,0,1], 6)
 #
 #     print(p)
