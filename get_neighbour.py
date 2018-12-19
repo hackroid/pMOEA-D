@@ -7,7 +7,7 @@ import numpy
 
 def get_neighbour(population_size):
     num = population_size // 10
-    neighbours = numpy.zeros((population_size, num))
+    neighbours = [[0 for _ in range(num)] for _ in range(population_size)]
     for i in range(population_size):
         neighbours[i][0] = i  # The neighbour contains itself
         count = 1
@@ -21,6 +21,6 @@ def get_neighbour(population_size):
                 count += 1
             dis += 1
     return neighbours
-#
+
 # if __name__=='__main__':
 #     print(get_neighbour(100))
