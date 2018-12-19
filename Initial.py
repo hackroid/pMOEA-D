@@ -16,6 +16,6 @@ def Initial(population_size, dimension, file_name):
     population = generate(population_size, dimension)
     weight_vector = generate_weightvector(population_size)
     neighbours = get_neighbour(population_size)
-    obj, z = evaluate_solution(population,  data)
+    obj, z = evaluate_solution(population, data)
     fitness = evaluate_fitness(population, obj, weight_vector)
     return population, weight_vector, neighbours, obj, z, fitness, data

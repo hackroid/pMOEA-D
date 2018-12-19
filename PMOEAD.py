@@ -5,6 +5,7 @@ from evaluate_solution import evaluate_singlefitness, evaluate_solution, evaluat
 import numpy
 from copy import copy
 
+
 def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
     population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
     iteration = 0
@@ -17,7 +18,7 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
             p1 = int(neighbours[index][p[0]])
             p2 = int(neighbours[index][p[1]])
             indiviual = CrossOver(population[p1], population[p2], dimension)
-            i_obj = evaluate_single(indiviual,copy(data))
+            i_obj = evaluate_single(indiviual, copy(data))
             if i_obj[0] < z[0]:
                 z[0] = i_obj[0]
             if i_obj[1] < z[1]:
