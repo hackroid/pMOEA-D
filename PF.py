@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def get_pf(obj, file_name):
+def get_pf(obj, file_name, population_size, iteration_num):
     result = {}
     for i in range(len(obj)):
         frate = obj[i][0]
@@ -21,7 +21,8 @@ def get_pf(obj, file_name):
             x.append(key)
             y.append(result[key])
     print(result)
-    plt.title(file_name)
+    title = '{}-{}-{}'.format(file_name,population_size,iteration_num)
+    plt.title(title)
 
     plt.xlabel('fratio')
     plt.ylabel('erate')
