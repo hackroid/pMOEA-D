@@ -1,4 +1,4 @@
-from Initial import Initial
+from Initial import initial
 import random
 from Variation import CrossOver
 from evaluate_solution import evaluate_singlefitness, evaluate_solution, evaluate_single
@@ -6,7 +6,7 @@ import numpy
 from copy import copy
 
 def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
-    population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
+    population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
     iteration = 0
     negihbour_num = len(neighbours[0])
     while iteration < max_iteration:

@@ -1,8 +1,6 @@
-import numpy
-
-'''
-    找到每个weight vector的邻居，邻居个数默认为population_size/10
-'''
+"""
+找到每个weight vector的邻居，邻居个数默认为population_size/10
+"""
 
 
 def get_neighbour(population_size):

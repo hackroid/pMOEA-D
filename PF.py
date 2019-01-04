@@ -17,11 +17,11 @@ def get_pf(obj, file_name, population_size, iteration_num):
         erate = obj[i][1]
         result[frate] = erate
     for key in result:
-        if key!=0:
+        if key != 0:
             x.append(key)
             y.append(result[key])
     print(result)
-    title = '{}-{}-{}'.format(file_name,population_size,iteration_num)
+    title = '{}-{}-{}'.format(file_name, population_size, iteration_num)
     plt.title(title)
 
     plt.xlabel('fratio')

@@ -1,8 +1,8 @@
 import numpy
 
 
-def generate(population_size, demension):
-    population = numpy.random.randint(0, 2, (population_size, demension))
+def generate(population_size, dimension):
+    population = numpy.random.randint(0, 2, (population_size, dimension))
     return numpy.array(population)
 
 # if __name__ == '__main__':
