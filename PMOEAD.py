@@ -24,7 +24,8 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
                 z[1] = i_obj[1]
             update_neighbour(population, neighbours[index], indiviual, obj, fitness, weight_vecotr)
             index += 1
-        print(f'iteration {iteration}')
+        # print(fiteration {iteration}'
+        print("iteration:", iteration)
     return population, obj
 
 
