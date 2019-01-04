@@ -1,6 +1,4 @@
-from PF import get_pf
 from PMOEAD import PMOEAD, PMOEAD_bytime
-# from PF import get_pf
 from store_result import store_result
 from controller import parallel_run, parallel_run_bytime
 import time
