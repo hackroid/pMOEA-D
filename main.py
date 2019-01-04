@@ -2,12 +2,17 @@ from PMOEAD import PMOEAD, PMOEAD_bytime
 from store_result import store_result
 from controller import parallel_run, parallel_run_bytime
 import time
+import sys
 
 if __name__ == '__main__':
 
-    _parallel = True if (input('Parallel?(y/n):') == 'y') else False
-    _bytime = True if (input('By time?(y/n):') == 'y') else False
-    _dataset = int(input('Choose your dataset: \n1. Wine\n2. clean1\n3. German\n(1/2/3): '))
+    argvv = sys.argv
+    _parallel = True if (argvv[1] == 'y') else False
+    _bytime = True if (argvv[2] == 'y') else False
+    _dataset = int(argvv[3])
+    # _parallel = True if (input('Parallel?(y/n):') == 'y') else False
+    # _bytime = True if (input('By time?(y/n):') == 'y') else False
+    # _dataset = int(input('Choose your dataset: \n1. Wine\n2. clean1\n3. German\n(1/2/3): '))
 
     if _dataset == 1:
         feature_num = 13
@@ -19,7 +24,7 @@ if __name__ == '__main__':
         feature_num = 24
         file_name = 'german.txt'
 
-    run_time = 10
+    run_time = 3600
     begin_time = time.time()
     directory = './src/datasets/' + file_name
     population_size = max(100, min(200, feature_num))
@@ -73,14 +78,15 @@ if __name__ == '__main__':
                 dimension=feature_num,
                 population_size=population_size
             )
-
+    duration = time.time() - begin_time
     store_result(
         obj=obj,
         file_name=file_name,
         poplation_size=population_size,
         argv_i=argv_i,
         argv_p=argv_p,
-        argv_t=argv_t
+        argv_t=argv_t,
+        result_t=duration
     )
 
-    print(time.time() - begin_time)
+    print(duration)

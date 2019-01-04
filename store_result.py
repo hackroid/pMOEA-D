@@ -1,4 +1,4 @@
-def store_result(obj, file_name, poplation_size, argv_i, argv_p, argv_t):
+def store_result(obj, file_name, poplation_size, argv_i, argv_p, argv_t, result_t):
     title = '{}-{}-{}-POP{}-{}'.format(argv_t, argv_p, argv_i, poplation_size, file_name)
     direct = './src/output/' + title
     result = open(direct, 'w')
@@ -7,4 +7,8 @@ def store_result(obj, file_name, poplation_size, argv_i, argv_p, argv_t):
         result.write(' ')
         result.write(str(obj[i][1]))
         result.write('\n')
+    result.close()
+    result = open('./src/output/record.txt', 'a')
+    result.write(title+' '+str(result_t))
+    result.write('\n')
     result.close()
