@@ -104,8 +104,8 @@ def parallel_run(rounds, iteration_num, cpu_num, file_name, dimension, populatio
 def parallel_run_bytime(max_time,iteration_num, cpu_num, file_name, dimension, population_size):
     TIME = time.time()
     round_turn = 1
-    population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
-    workers = create_ParallelWorker(cpu_num)
+    population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
+    workers = create_worker(cpu_num)
     length = population_size // cpu_num
     result = [[None for _ in range(3)] for _ in range(cpu_num)]
     while time.time()-TIME<max_time:

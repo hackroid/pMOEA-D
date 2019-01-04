@@ -19,7 +19,7 @@ if __name__ == '__main__':
         feature_num = 24
         file_name = 'german.txt'
 
-    run_time = 3600
+    run_time = 10
     begin_time = time.time()
     directory = './src/datasets/' + file_name
     population_size = max(100, min(200, feature_num))
@@ -32,7 +32,7 @@ if __name__ == '__main__':
             argv_t = 'TT'
             argv_i = '0000'
             population, obj = PMOEAD_bytime(
-                file_name=file_name,
+                file_name=directory,
                 dimension=feature_num,
                 population_size=population_size,
                 max_time=run_time,
@@ -58,7 +58,7 @@ if __name__ == '__main__':
                 max_time=run_time,
                 iteration_num=iteration_num,
                 cpu_num=8,
-                file_name=file_name,
+                file_name=directory,
                 dimension=feature_num,
                 population_size=population_size
             )
