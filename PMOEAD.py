@@ -1,4 +1,4 @@
-from Initial import Initial
+from Initial import initial
 import random, time
 
 from Variation import CrossOver
@@ -31,7 +31,7 @@ def PMOEAD(file_name, dimension, population_size, max_iteration, begin, end):
 
 def PMOEAD_bytime(file_name, dimension, population_size, max_time, begin, end):
     TIME = time.time()
-    population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
+    population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
     iteration = 0
     negihbour_num = len(neighbours[0])
     while time.time()-TIME<max_time:
