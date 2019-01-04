@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
     begin = 0
     end = population_size
+    
     #------ This is the single core--------
     # population, obj = PMOEAD(file_name=file_name, dimension=feature_num, population_size=population_size,
                              # max_iteration=iteration_num, begin=begin, end=end)
@@ -44,3 +45,4 @@ if __name__ == '__main__':
     # store_result(obj, file_name, population_size, iteration_num)
     get_pf(obj, file_name, population_size, iteration_num)
     print(time.time()-begin_time)
+

@@ -1,17 +1,17 @@
 from generate_population import generate
 from generate_weightvector import generate_weightvector
 from get_neighbour import get_neighbour
-from evaluate_solution import evaluate_solution, evaluate_single, evaluate_singlefitness, evaluate_fitness
+from evaluate_solution import evaluate_solution, evaluate_fitness
 import numpy
 
-'''
-    This method needs 
-'''
+"""
+This method needs 
+"""
 
 OBJ_NUM = 2
 
 
-def Initial(population_size, dimension, file_name):
+def initial(population_size, dimension, file_name):
     data = numpy.loadtxt(file_name)
     population = generate(population_size, dimension)
     weight_vector = generate_weightvector(population_size)

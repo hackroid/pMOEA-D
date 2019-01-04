@@ -4,28 +4,28 @@ import time
 import PMOEAD
 import multiprocessing as mp
 
-from Initial import Initial
+from Initial import initial
 from Variation import CrossOver
 from evaluate_solution import evaluate_single
 
 
 class ParallelWorker(mp.Process):
-    def __init__(self, inQ, outQ, random_seed):
+    def __init__(self, in_queue, out_queue, random_seed):
         super(ParallelWorker, self).__init__(target=self.start)
-        self.inQ = inQ
-        self.outQ = outQ
+        self.inQ = in_queue
+        self.outQ = out_queue
         random.seed(random_seed)
 
     def run(self):
         while True:
             task = self.inQ.get()
             population, neighbours, z, obj, weight_vecotr, dimension, fitness, iteration_num, begin, end, data = task
-            sol = Parallel(population, neighbours, z, obj, weight_vecotr, dimension, fitness, iteration_num, begin, end,
+            sol = parallel(population, neighbours, z, obj, weight_vecotr, dimension, fitness, iteration_num, begin, end,
                            data)
             self.outQ.put(sol)
 
 
-def create_ParallelWorker(num):
+def create_worker(num):
     workers = []
     for i in range(num):
         workers.append(ParallelWorker(mp.Queue(), mp.Queue(), random.randint(0, 10 ** 9)))
@@ -38,23 +38,23 @@ def finish_worker(workers):
         w.terminate()
 
 
-def Parallel(population, neighbours, z, obj, weight_vecotr, dimension, fitness, iteration_num, begin, end, data):
+def parallel(population, neighbours, z, obj, weight_vecotr, dimension, fitness, iteration_num, begin, end, data):
     iteration = 0
-    negihbour_num = len(neighbours[0])
+    neighbor_num = len(neighbours[0])
     while iteration < iteration_num:
         iteration += 1
         index = begin
         while index < end:
-            p = random.sample(range(0, negihbour_num), 2)  # select two parents from its neighbour
+            p = random.sample(range(0, neighbor_num), 2)  # select two parents from its neighbour
             p1 = int(neighbours[index][p[0]])
             p2 = int(neighbours[index][p[1]])
-            indiviual = CrossOver(population[p1], population[p2], dimension)
-            i_obj = evaluate_single(indiviual, copy(data))
+            individual = CrossOver(population[p1], population[p2], dimension)
+            i_obj = evaluate_single(individual, copy(data))
             if i_obj[0] < z[0]:
                 z[0] = i_obj[0]
             if i_obj[1] < z[1]:
                 z[1] = i_obj[1]
-            PMOEAD.update_neighbour(population, neighbours[index], indiviual, obj, fitness, weight_vecotr)
+            PMOEAD.update_neighbour(population, neighbours[index], individual, obj, fitness, weight_vecotr)
             index += 1
     # obj=[[frate,erate],,,,]
     return population, obj, fitness
@@ -77,12 +77,12 @@ def combine_population(result, cpu_num, population_size):
     return new_population, new_obj, new_fitness
 
 
-def parallel_run(round, iteration_num, cpu_num, file_name, dimension, population_size):
-    population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
-    workers = create_ParallelWorker(cpu_num)
+def parallel_run(rounds, iteration_num, cpu_num, file_name, dimension, population_size):
+    population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
+    workers = create_worker(cpu_num)
     length = population_size // cpu_num
     result = [[None for _ in range(3)] for _ in range(cpu_num)]
-    while round > 0:
+    while rounds > 0:
         for i in range(cpu_num):
             begin = length * i
             end = length * (i + 1)
@@ -96,8 +96,8 @@ def parallel_run(round, iteration_num, cpu_num, file_name, dimension, population
         for i in range(cpu_num):
             result[i][0], result[i][1], result[i][2] = workers[i].outQ.get()
         population, obj, fitness = combine_population(result, cpu_num, population_size)
-        print(round)
-        round -= 1
+        print(rounds)
+        rounds -= 1
     finish_worker(workers)
     return population, obj
 
