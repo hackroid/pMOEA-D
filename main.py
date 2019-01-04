@@ -1,5 +1,5 @@
 from PMOEAD import PMOEAD
-#from PF import get_pf
+# from PF import get_pf
 from store_result import store_result
 from controller import parallel_run
 import time
@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
     begin = 0
     end = population_size
-    #population, obj = PMOEAD(file_name, feature_num, population_size, iteration_num, begin, end)
+    # population, obj = PMOEAD(file_name, feature_num, population_size, iteration_num, begin, end)
     population, obj = parallel_run(10, 10, 12, file_name, 166, population_size)
     store_result(obj, file_name, population_size, iteration_num)
-    #get_pf(obj, file_name, population_size, iteration_num)
-    print(time.time()-begin_time)
+    # get_pf(obj, file_name, population_size, iteration_num)
+    print(time.time() - begin_time)
