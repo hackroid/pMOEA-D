@@ -8,3 +8,5 @@ test.py
 /venv
 /venv/*
 src/output/*
+/src/output
+/src/output/*
