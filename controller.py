@@ -8,7 +8,8 @@ from Initial import initial
 from Variation import CrossOver
 from evaluate_solution import evaluate_single
 
-
+INF =1e9
+Time_limit = 3600
 class ParallelWorker(mp.Process):
     def __init__(self, in_queue, out_queue, random_seed):
         super(ParallelWorker, self).__init__(target=self.start)
@@ -41,7 +42,9 @@ def finish_worker(workers):
 def parallel(population, neighbours, z, obj, weight_vecotr, dimension, fitness, iteration_num, begin, end, data):
     iteration = 0
     neighbor_num = len(neighbours[0])
-    while iteration < iteration_num:
+    start_time = time.time()
+    while iteration < iteration_num and time.time()-start_time<Time_limit:
+        print('iteration',iteration,'time',time.time()-start_time)
         iteration += 1
         index = begin
         while index < end:
@@ -50,6 +53,7 @@ def parallel(population, neighbours, z, obj, weight_vecotr, dimension, fitness, 
             p2 = int(neighbours[index][p[1]])
             individual = CrossOver(population[p1], population[p2], dimension)
             i_obj = evaluate_single(individual, copy(data))
+
             if i_obj[0] < z[0]:
                 z[0] = i_obj[0]
             if i_obj[1] < z[1]:
@@ -101,14 +105,37 @@ def parallel_run(rounds, iteration_num, cpu_num, file_name, dimension, populatio
     finish_worker(workers)
     return population, obj
 
-def parallel_run_bytime(max_time,iteration_num, cpu_num, file_name, dimension, population_size):
-    TIME = time.time()
-    round_turn = 1
-    population, weight_vecotr, neighbours, obj, z, fitness, data = Initial(population_size, dimension, file_name)
-    workers = create_ParallelWorker(cpu_num)
+
+def naive_paralle(total_iteration, cpu_num, file_name, dimension, population_size):
+    population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
+    workers = create_worker(cpu_num)
     length = population_size // cpu_num
     result = [[None for _ in range(3)] for _ in range(cpu_num)]
-    while time.time()-TIME<max_time:
+    for i in range(cpu_num):
+        begin = length * i
+        end = length * (i + 1)
+        if i == cpu_num:
+            end = population_size
+        workers[i].inQ.put(
+            (deepcopy(population), neighbours, deepcopy(z), deepcopy(obj), weight_vecotr, dimension,
+             deepcopy(fitness), total_iteration, begin, end, data))
+    # result[i][0] population , result[i][1] obj  The value of erate and frate
+    # result[i][1] obj,[[frate,erate],[],,]
+    for i in range(cpu_num):
+        result[i][0], result[i][1], result[i][2] = workers[i].outQ.get()
+    population, obj, fitness = combine_population(result, cpu_num, population_size)
+    finish_worker(workers)
+    return population, obj
+
+
+def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, population_size):
+    TIME = time.time()
+    round_turn = 1
+    population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
+    workers = create_worker(cpu_num)
+    length = population_size // cpu_num
+    result = [[None for _ in range(3)] for _ in range(cpu_num)]
+    while time.time() - TIME < max_time:
         for i in range(cpu_num):
             begin = length * i
             end = length * (i + 1)

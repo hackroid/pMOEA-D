@@ -2,46 +2,58 @@ from PF import get_pf
 from PMOEAD import PMOEAD,PMOEAD_bytime
 #from PF import get_pf
 from store_result import store_result
-from controller import parallel_run, parallel_run_bytime
+from controller import parallel_run, parallel_run_bytime, naive_paralle
 import time
+INF = 1E9
 
 if __name__ == '__main__':
     begin_time = time.time()
-    file_name = 'clean1.txt'
-    feature_num = 166
+    file_name = 'Wine.txt'
+    feature_num = 13
     population_size = max(100, min(200, feature_num))
-    iteration_num = 100
+    iteration_num = 1000
 
     begin = 0
     end = population_size
     
     #------ This is the single core--------
     # population, obj = PMOEAD(file_name=file_name, dimension=feature_num, population_size=population_size,
-                             # max_iteration=iteration_num, begin=begin, end=end)
+    #                              max_iteration=iteration_num, begin=begin, end=end)
+    # file_name = 'clean1-single'
     # ------------------------------------
 
     # -----------This is the multiple cores
     # round, iteration_num, cpu_num, file_name, dimension, population_size
-    # population, obj = parallel_run(round=10, iteration_num=10, cpu_num=8, file_name=file_name, dimension=166, population_size=population_size)
+    # population, obj = parallel_run(rounds=100, iteration_num=10, cpu_num=4, file_name=file_name, dimension=166, population_size=population_size)
+    # file_name = 'clean1-PMOEAD-1000'
     # ------------------------------------
 
     # -------------Run by time parallel----------------------
     # max_time,iteration_num, cpu_num, file_name, dimension, population_size
-    # run_time =200
-    # population, obj = parallel_run_bytime(max_time=run_time, iteration_num=10, cpu_num=8, file_name=file_name, dimension=166, population_size=population_size)
-    # file_name = file_name +'-parallel run by time'
-    # store_result(obj, file_name, population_size, run_time)
+    run_time =3600
+    population, obj = parallel_run_bytime(max_time=run_time, iteration_num=10, cpu_num=4, file_name=file_name, dimension=13, population_size=population_size)
+    a = 'Wine-pmoead-time-3600'
+    store_result(obj,a, population_size, run_time)
     # ------------------------------------------
 
     # ----------------Run by time single core---------------
     # file_name, dimension, population_size, max_time, begin, end
-    run_time =200
+    run_time = 3600
     population, obj = PMOEAD_bytime(file_name=file_name, dimension=feature_num, population_size=population_size, max_time=run_time, begin=begin, end=end)
-    file_name = file_name +'-single core run by time'
-    store_result(obj, file_name, population_size, run_time)
+    a = 'Wine-single-time-3600'
+    store_result(obj, a, population_size, run_time)
 
     # --------------------------------------------------------
-
+    # naive run by the same iteration
+    # total_iteration = 1000
+    # population, obj = naive_paralle(total_iteration=total_iteration, cpu_num=4, file_name=file_name, dimension=166, population_size=population_size)
+    # file_name = 'clean1-naive-1000'
+    # --------------------------------------------------------
+    # naive run by same time
+    population, obj = naive_paralle(total_iteration=INF, cpu_num=4, file_name=file_name, dimension=13, population_size=population_size)
+    a = 'Wine-naive-time-3600'
+    store_result(obj, a, population_size, 3600)
+    # --------------------------------------------------------
     # store_result(obj, file_name, population_size, iteration_num)
     get_pf(obj, file_name, population_size, iteration_num)
     print(time.time()-begin_time)
