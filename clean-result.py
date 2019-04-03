@@ -2,7 +2,7 @@ import numpy as np
 
 
 def clean(file_name, target_name):
-    # file_name = 'output/clean1-single-time-3600-166-3600.txt'
+    # file_name = 'result/clean1-single-time-3600-166-3600.txt'
     obj = np.loadtxt(file_name)
     result = {}
     for i in range(len(obj)):
@@ -29,4 +29,4 @@ def clean(file_name, target_name):
 
 
 if __name__ == '__main__':
-    clean('output/Wine-single-time-3600-100-3600.txt', 'Wine-single-time-3600.txt')
+    clean('result/Wine_overlapping_p100_t120_o0.5_c8-100-120.txt', 'result/Wine_overlapping_p100_t120_o0.5_c8.txt')
