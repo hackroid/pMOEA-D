@@ -11,5 +11,3 @@ def generate_weightvector(population_num):
         weight_vector[i][0] = (i + 1) * ratio  # The reference point is on the fratio
     return weight_vector
 
-# if __name__=='__main__':
-#     print(generate_weightvector(5))

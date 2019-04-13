@@ -5,7 +5,7 @@ import copy
 K = 10
 Ratio = 0.7
 INF = 233
-Alpha = 1  # two objects are the same important
+Alpha = 0.01  # two objects are the same important
 
 
 def evaluate_single(solution, data):
