@@ -68,6 +68,3 @@ def evaluate_fitness(solutions, obj, weight_vector):
         fitness[i] = evaluate_singlefitness(obj[i][0], obj[i][1], s, nref)
     return fitness
 
-
-if __name__ == '__main__':
-    print(evaluate_single([1, 1, 1, 1], 'irs.txt'))

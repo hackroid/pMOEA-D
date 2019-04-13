@@ -1,3 +1,4 @@
+
 from PF import get_pf
 from PMOEAD import PMOEAD,PMOEAD_bytime
 #from PF import get_pf
@@ -62,3 +63,4 @@ if __name__ == '__main__':
     population, obj = parallel_run_bytime(max_time=run_time, iteration_num=10, cpu_num=8, file_name=file_name,dimension=13, population_size=population_size,overlapping_ratio=0.2)
     a = 'clean1_overlapping_t3600_o0.2_c8'
     store_result(obj, a, population_size, run_time)
+
