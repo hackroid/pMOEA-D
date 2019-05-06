@@ -1,7 +1,9 @@
 import os
-def store_result(obj, file_name, poplation_size, iteration_num):
-    path = './result'+os.path.sep
-    title = path+'{}-{}-{}.txt'.format(file_name, poplation_size, iteration_num)
+
+
+def store_result(obj, file_name):
+    path = './result' + os.path.sep
+    title = path + '{}.txt'.format(file_name)
     result = open(title, 'w')
     for i in range(len(obj)):
         result.write(str(obj[i][0]))
