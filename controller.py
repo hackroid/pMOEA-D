@@ -8,6 +8,7 @@ from Initial import initial
 from Variation import CrossOver
 from evaluate_solution import evaluate_single
 
+
 INF = 1e9
 Time_limit = 3600
 
@@ -45,8 +46,10 @@ def parallel(population, neighbours, z, obj, weight_vector, dimension, fitness, 
     iteration = 0
     neighbor_num = len(neighbours[0])
     start_time = time.time()
+
     while iteration < iteration_num and time.time() - start_time < Time_limit:
         print('iteration', iteration, 'time', time.time() - start_time)
+
         iteration += 1
         index = begin
         while index < end:
@@ -60,6 +63,7 @@ def parallel(population, neighbours, z, obj, weight_vector, dimension, fitness, 
                 z[0] = i_obj[0]
             if i_obj[1] < z[1]:
                 z[1] = i_obj[1]
+
 
             PMOEAD.update_neighbour(population, neighbours[index], individual, i_obj, obj, fitness, weight_vecotr)
 
@@ -107,6 +111,7 @@ def parallel_run(rounds, iteration_num, cpu_num, file_name, dimension, populatio
     return population, obj
 
 
+
 def naive_paralle(total_iteration, cpu_num, file_name, dimension, population_size):
     population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
     workers = create_worker(cpu_num)
@@ -129,6 +134,7 @@ def naive_paralle(total_iteration, cpu_num, file_name, dimension, population_siz
     return population, obj
 
 
+
 def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, population_size, overlapping_ratio=0,
                         auto_adjust=False):
     TIME = time.time()
@@ -138,13 +144,16 @@ def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, 
     workers = create_worker(cpu_num)
     length = population_size // cpu_num
     overlapping_part = int(overlapping_ratio * length)
+
     result = [[None for _ in range(3)] for _ in range(cpu_num)]
 
     while time.time() - TIME < max_time:
 
         for i in range(cpu_num):
             begin = length * i
+
             end = min(length * (i + 1) + overlapping_part, population_size)
+
             if i == cpu_num:
                 end = population_size
             workers[i].inQ.put(
@@ -157,3 +166,4 @@ def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, 
         round_turn += 1
     finish_worker(workers)
     return population, obj
+

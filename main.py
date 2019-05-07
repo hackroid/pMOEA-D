@@ -53,6 +53,7 @@ if __name__ == '__main__':
     # end = population_size
 
     # ------ This is the single core--------
+
     # population, obj = PMOEAD(file_name=file_name, dimension=feature_num, population_size=population_size,
     #                              max_iteration=iteration_num, begin=begin, end=end)
     # file_name = 'clean1-single'
@@ -65,21 +66,25 @@ if __name__ == '__main__':
     # ------------------------------------
 
     # -------------Run by time parallel----------------------
+
     # max_time,iteration_num, cpu_num, file_name, dimension, population_size
     # run_time = 3600
     # population, obj = parallel_run_bytime(max_time=run_time, iteration_num=10, cpu_num=8, file_name=file_name,
     #                                       dimension=13, population_size=population_size)
     # a = 'clean1_pmoead_t3600_c8'
     # store_result(obj, a, population_size, run_time)
+
     # ------------------------------------------
 
     # ----------------Run by time single core---------------
     # file_name, dimension, population_size, max_time, begin, end
+
     # run_time = 3600
     # population, obj = PMOEAD_bytime(file_name=file_name, dimension=feature_num, population_size=population_size,
     #                                 max_time=run_time, begin=begin, end=end)
     # a = 'clean1_single_t3600'
     # store_result(obj, a, population_size, run_time)
+
 
     # --------------------------------------------------------
     # naive run by the same iteration
@@ -88,6 +93,7 @@ if __name__ == '__main__':
     # file_name = 'clean1-naive-1000'
     # --------------------------------------------------------
     # naive run by same time
+
     # population, obj = naive_paralle(total_iteration=INF, cpu_num=4, file_name=file_name, dimension=13, population_size=population_size)
     # a = 'Wine-naive-time-3600'
     # store_result(obj, a, population_size, 3600)
@@ -101,3 +107,4 @@ if __name__ == '__main__':
     #                                       dimension=13, population_size=population_size, overlapping_ratio=0.2)
     # a = 'clean1_overlapping_t3600_o0.2_c8'
     # store_result(obj, a, population_size, run_time)
+
