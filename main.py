@@ -19,25 +19,25 @@ def run_test(file_name):
     begin = 0
     end = population_size
     # parallel run without time
-    # for i in range(test_times):
-    #     population, obj = parallel_run_bytime(max_time=run_time, iteration_num=iteration_num, cpu_num=8,
-    #                                           file_name=file_name,
-    #                                           dimension=feature_num, population_size=population_size)
-    #     name = 'clean1_cpu8_{}'.format(i)
-    #     store_result(obj, name)
-    #     single run
-    # for i in range(test_times):
-    #     population, obj = PMOEAD_bytime(file_name=file_name, dimension=feature_num, population_size=population_size,
-    #                                     max_time=run_time, begin=begin, end=end)
-    #     name = 'clean1_single_{}'.format(i)
-    #     store_result(obj, name)
-    # for i in range(test_times):
-    #     population, obj = parallel_run_bytime(max_time=run_time, iteration_num=iteration_num, cpu_num=8,
-    #                                           file_name=file_name,
-    #                                           dimension=feature_num, population_size=population_size,
-    #                                           overlapping_ratio=0.2)
-    #     name = 'clean1_cpu8_o.2_{}'.format(i)
-    #     store_result(obj, name)
+    for i in range(test_times):
+        population, obj = parallel_run_bytime(max_time=run_time, iteration_num=iteration_num, cpu_num=8,
+                                              file_name=file_name,
+                                              dimension=feature_num, population_size=population_size)
+        name = 'clean1_cpu8_{}'.format(i)
+        store_result(obj, name)
+        # single run
+    for i in range(test_times):
+        population, obj = PMOEAD_bytime(file_name=file_name, dimension=feature_num, population_size=population_size,
+                                        max_time=run_time, begin=begin, end=end)
+        name = 'clean1_single_{}'.format(i)
+        store_result(obj, name)
+    for i in range(test_times):
+        population, obj = parallel_run_bytime(max_time=run_time, iteration_num=iteration_num, cpu_num=8,
+                                              file_name=file_name,
+                                              dimension=feature_num, population_size=population_size,
+                                              overlapping_ratio=0.2)
+        name = 'clean1_cpu8_o.2_{}'.format(i)
+        store_result(obj, name)
     for i in range(test_times):
         population, obj = parallel_run_bytime(max_time=run_time, iteration_num=iteration_num, cpu_num=8,
                                               file_name=file_name,

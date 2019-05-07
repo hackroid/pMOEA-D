@@ -49,7 +49,7 @@ def parallel(population, neighbours, z, obj, weight_vector, dimension, fitness, 
     start_time = time.time()
 
     while iteration < iteration_num and time.time() - start_time < Time_limit:
-        print('iteration', iteration, 'time', time.time() - start_time)
+        # print('iteration', iteration, 'time', time.time() - start_time)
         iteration += 1
         index = begin
         while index < end:
@@ -154,19 +154,23 @@ def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, 
                 begin = length * i
                 end = min(length * (i + 1) + ratios[i] * length, population_size)
                 per = partition_performance_avg(fitness, begin, end)
-                if partition_performance[i] < per and ratios[i] < MAX_RATIO:
+                if partition_performance[i] <= per and ratios[i] < MAX_RATIO:
                     end = max(end + STEP * length, population_size)
                     ratios[i] += STEP
+                    print('ratio:', ratios[i])
                 partition_performance[i] = per
+
             if i == cpu_num:
                 end = population_size
+            begin = int(begin)
+            end = int (end)
             workers[i].inQ.put(
                 (deepcopy(population), neighbours, deepcopy(z), deepcopy(obj), weight_vector, dimension,
                  deepcopy(fitness), iteration_num, begin, end, data))
         for i in range(cpu_num):
             result[i][0], result[i][1], result[i][2] = workers[i].outQ.get()
         population, obj, fitness = combine_population(result, cpu_num, population_size)
-        print(round_turn)
+        # print(round_turn)
         round_turn += 1
     finish_worker(workers)
     return population, obj
@@ -174,6 +178,8 @@ def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, 
 
 def partition_performance_avg(fit, begin, end):
     res = 0
+    begin = int(begin)
+    end = int(end)
     for i in range(begin, end):
         res = res + fit[i]
     return res / (end - begin)
