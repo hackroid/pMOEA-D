@@ -1,3 +1,4 @@
+
 from Initial import initial
 import random, time
 
@@ -66,3 +67,4 @@ def update_neighbour(population, neighbour, indiviual,i_obj, obj, fitness, weigh
             fitness[index] = temp
             obj[index][0] = i_obj[0]
             obj[index][1] = i_obj[1]
+

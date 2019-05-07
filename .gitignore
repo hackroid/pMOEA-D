@@ -1,7 +1,13 @@
+
+/__pycache__
+/__pycache__/*
+__pycache__/
 .idea/
 .git/
 test.py
 .DS_Store
 /venv
 /venv/*
-*.txt
+src/output/*
+/src/output
+/src/output/*
