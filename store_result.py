@@ -1,8 +1,10 @@
 
 import os
-def store_result(obj, file_name, poplation_size, iteration_num):
-    path = './result'+os.path.sep
-    title = path+'{}-{}-{}.txt'.format(file_name, poplation_size, iteration_num)
+
+
+def store_result(obj, file_name):
+    path = './result' + os.path.sep
+    title = path + '{}.txt'.format(file_name)
     result = open(title, 'w')
 
     for i in range(len(obj)):
@@ -11,7 +13,4 @@ def store_result(obj, file_name, poplation_size, iteration_num):
         result.write(str(obj[i][1]))
         result.write('\n')
     result.close()
-    result = open('./src/output/record.txt', 'a')
-    result.write(title+' '+str(result_t))
-    result.write('\n')
-    result.close()
+

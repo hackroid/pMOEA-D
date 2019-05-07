@@ -29,4 +29,4 @@ def clean(file_name, target_name):
 
 
 if __name__ == '__main__':
-    clean('result/Wine_overlapping_p100_t120_o0.5_c8-100-120.txt', 'result/Wine_overlapping_p100_t120_o0.5_c8.txt')
+    clean('result/clean1_single_t3600-167-3600.txt', 'result/clean1_single_t3600.txt')
