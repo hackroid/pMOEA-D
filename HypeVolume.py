@@ -1,3 +1,7 @@
+import numpy as np
+from DrawPicture import get_can
+
+
 def calhy(x, y):
     l = len(x)
     res = 0.0
@@ -9,3 +13,9 @@ def calhy(x, y):
         else:
             res = res + (x[i + 1] - x[i]) * (1 - y[i]);
     return res
+
+
+def get_hv(filename):
+    m1 = np.loadtxt(filename)
+    x1, y1 = get_can(m1)
+    return calhy(x1, y1)
