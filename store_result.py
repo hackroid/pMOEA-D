@@ -1,5 +1,5 @@
 import os
-
+from HypeVolume import*
 
 def store_result(obj, file_name):
     path = './result' + os.path.sep
@@ -26,3 +26,4 @@ def store_result(obj, file_name):
             f.write(str(result[key]))
             f.write('\n')
     f.close()
+    return get_hv(title)
