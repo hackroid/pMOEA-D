@@ -8,9 +8,10 @@ from Initial import initial
 from Variation import CrossOver
 from evaluate_solution import evaluate_single
 
-
 INF = 1e9
 Time_limit = 3600
+STEP = 0.01  ## Overlapping adding issue
+MAX_RATIO = 0.5  ## Maximum overlapping issue
 
 
 class ParallelWorker(mp.Process):
@@ -48,8 +49,7 @@ def parallel(population, neighbours, z, obj, weight_vector, dimension, fitness, 
     start_time = time.time()
 
     while iteration < iteration_num and time.time() - start_time < Time_limit:
-        print('iteration', iteration, 'time', time.time() - start_time)
-
+        # print('iteration', iteration, 'time', time.time() - start_time)
         iteration += 1
         index = begin
         while index < end:
@@ -64,8 +64,7 @@ def parallel(population, neighbours, z, obj, weight_vector, dimension, fitness, 
             if i_obj[1] < z[1]:
                 z[1] = i_obj[1]
 
-
-            PMOEAD.update_neighbour(population, neighbours[index], individual, i_obj, obj, fitness, weight_vecotr)
+            PMOEAD.update_neighbour(population, neighbours[index], individual, i_obj, obj, fitness, weight_vector)
 
             index += 1
     return population, obj, fitness
@@ -111,7 +110,6 @@ def parallel_run(rounds, iteration_num, cpu_num, file_name, dimension, populatio
     return population, obj
 
 
-
 def naive_paralle(total_iteration, cpu_num, file_name, dimension, population_size):
     population, weight_vecotr, neighbours, obj, z, fitness, data = initial(population_size, dimension, file_name)
     workers = create_worker(cpu_num)
@@ -134,7 +132,6 @@ def naive_paralle(total_iteration, cpu_num, file_name, dimension, population_siz
     return population, obj
 
 
-
 def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, population_size, overlapping_ratio=0,
                         auto_adjust=False):
     TIME = time.time()
@@ -143,27 +140,46 @@ def parallel_run_bytime(max_time, iteration_num, cpu_num, file_name, dimension, 
 
     workers = create_worker(cpu_num)
     length = population_size // cpu_num
+    ratios = [0 for _ in range(cpu_num)]
+    partition_performance = [INF for _ in range(cpu_num)]
     overlapping_part = int(overlapping_ratio * length)
-
     result = [[None for _ in range(3)] for _ in range(cpu_num)]
 
     while time.time() - TIME < max_time:
 
         for i in range(cpu_num):
             begin = length * i
-
             end = min(length * (i + 1) + overlapping_part, population_size)
+            if auto_adjust:
+                begin = length * i
+                end = min(length * (i + 1) + ratios[i] * length, population_size)
+                per = partition_performance_avg(fitness, begin, end)
+                if partition_performance[i] <= per and ratios[i] < MAX_RATIO:
+                    end = max(end + STEP * length, population_size)
+                    ratios[i] += STEP
+                    print('ratio:', ratios[i])
+                partition_performance[i] = per
 
             if i == cpu_num:
                 end = population_size
+            begin = int(begin)
+            end = int (end)
             workers[i].inQ.put(
                 (deepcopy(population), neighbours, deepcopy(z), deepcopy(obj), weight_vector, dimension,
                  deepcopy(fitness), iteration_num, begin, end, data))
         for i in range(cpu_num):
             result[i][0], result[i][1], result[i][2] = workers[i].outQ.get()
         population, obj, fitness = combine_population(result, cpu_num, population_size)
-        print(round_turn)
+        # print(round_turn)
         round_turn += 1
     finish_worker(workers)
     return population, obj
 
+
+def partition_performance_avg(fit, begin, end):
+    res = 0
+    begin = int(begin)
+    end = int(end)
+    for i in range(begin, end):
+        res = res + fit[i]
+    return res / (end - begin)
