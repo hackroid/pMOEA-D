@@ -259,64 +259,75 @@ def sys_args():
 
 
 def run_task(packs: dict):
+    test_times = 15
     if packs["method"] == 1:
-        population, obj = PMOEAD_bytime(
-            file_name=packs["file_name"],
-            dimension=packs["dimension"],
-            population_size=packs["population_size"],
-            max_time=packs["time"],
-            begin=packs["begin"],
-            end=packs["end"]
-        )
-        name = '[dataset_{}][method_{}][time_{}]'.format(packs["name"],
-                                                         packs["method"],
-                                                         packs["time"])
-    elif packs["method"] == 2:
-        population, obj = parallel_run_bytime(
-            max_time=packs["time"],
-            iteration_num=packs["iter"],
-            cpu_num=packs["cores"],
-            file_name=packs["file_name"],
-            dimension=packs["dimension"],
-            population_size=packs["population_size"]
-        )
-        name = '[dataset_{}][method_{}][time_{}][cpu_{}]'.format(packs["name"],
+        for i in range(test_times):
+            population, obj = PMOEAD_bytime(
+                file_name=packs["file_name"],
+                dimension=packs["dimension"],
+                population_size=packs["population_size"],
+                max_time=packs["time"],
+                begin=packs["begin"],
+                end=packs["end"]
+            )
+            name = '[dataset_{}][method_{}][time_{}][{}]'.format(packs["name"],
                                                                  packs["method"],
                                                                  packs["time"],
-                                                                 packs["cores"])
+                                                                 i)
+            store_result(obj, name)
+    elif packs["method"] == 2:
+        for i in range(test_times):
+            population, obj = parallel_run_bytime(
+                max_time=packs["time"],
+                iteration_num=packs["iter"],
+                cpu_num=packs["cores"],
+                file_name=packs["file_name"],
+                dimension=packs["dimension"],
+                population_size=packs["population_size"]
+            )
+            name = '[dataset_{}][method_{}][time_{}][cpu_{}][{}]'.format(packs["name"],
+                                                                         packs["method"],
+                                                                         packs["time"],
+                                                                         packs["cores"],
+                                                                         i)
+            store_result(obj, name)
     elif packs["method"] == 3:
-        population, obj = parallel_run_bytime(
-            max_time=packs["time"],
-            iteration_num=packs["iter"],
-            cpu_num=packs["cores"],
-            file_name=packs["file_name"],
-            dimension=packs["dimension"],
-            population_size=packs["population_size"],
-            overlapping_ratio=packs["overlap"]
-        )
-        name = '[dataset_{}][method_{}][time_{}][cpu_{}][ovlp_{}]'.format(packs["name"],
-                                                                          packs["method"],
-                                                                          packs["time"],
-                                                                          packs["cores"],
-                                                                          packs["overlap"])
+        for i in range(test_times):
+            population, obj = parallel_run_bytime(
+                max_time=packs["time"],
+                iteration_num=packs["iter"],
+                cpu_num=packs["cores"],
+                file_name=packs["file_name"],
+                dimension=packs["dimension"],
+                population_size=packs["population_size"],
+                overlapping_ratio=packs["overlap"]
+            )
+            name = '[dataset_{}][method_{}][time_{}][cpu_{}][ovlp_{}][{}]'.format(packs["name"],
+                                                                                  packs["method"],
+                                                                                  packs["time"],
+                                                                                  packs["cores"],
+                                                                                  packs["overlap"],
+                                                                                  i)
+            store_result(obj, name)
     else:
-        population, obj = parallel_run_bytime(
-            max_time=packs["time"],
-            iteration_num=packs["iter"],
-            cpu_num=packs["cores"],
-            file_name=packs["file_name"],
-            dimension=packs["dimension"],
-            population_size=packs["population_size"],
-            overlapping_ratio=packs["overlap"],
-            auto_adjust=True
-        )
-        name = '[dataset_{}][method_{}][time_{}][cpu_{}][ovlp_{}][auto]'.format(packs["name"],
-                                                                                packs["method"],
-                                                                                packs["time"],
-                                                                                packs["cores"],
-                                                                                packs["overlap"])
-    store_result(obj, name)
-
+        for i in range(test_times):
+            population, obj = parallel_run_bytime(
+                max_time=packs["time"],
+                iteration_num=packs["iter"],
+                cpu_num=packs["cores"],
+                file_name=packs["file_name"],
+                dimension=packs["dimension"],
+                population_size=packs["population_size"],
+                overlapping_ratio=packs["overlap"],
+                auto_adjust=True
+            )
+            name = '[dataset_{}][method_{}][time_{}][cpu_{}][ovlp_{}][auto][{}]'.format(packs["name"],
+                                                                                        packs["method"],
+                                                                                        packs["time"],
+                                                                                        packs["cores"],
+                                                                                        packs["overlap"],
+                                                                                        i)
+            store_result(obj, name)
 
 if __name__ == '__main__':
     pack = sys_args()
