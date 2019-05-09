@@ -25,14 +25,14 @@ def run_test(file_name):
     # single run
     # test_PMOEAD_bytime(f, test_times, file_name, feature_num, population_size, run_time, begin, end)  # single
     # fix ratio
-    test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
-                                    population_size, 0.1)
-    test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
-                                    population_size, 0.3)
-    test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
-                                    population_size, 0.4)
-    test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
-                                    population_size, 0.5)
+    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    #                                population_size, 0.1)
+    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    #                                population_size, 0.3)
+    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    #                                population_size, 0.4)
+    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    #                               population_size, 0.5)
 
     # auto run
     test_parallel_run_by_time_auto(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,

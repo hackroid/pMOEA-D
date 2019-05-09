@@ -54,4 +54,4 @@ def get_directory_hv(path):
 
 
 if __name__ == '__main__':
-    get_directory_hv('/home/kaiqiang/result')
+    get_directory_hv('/home/kaiqiang/file/创新实验/result')
