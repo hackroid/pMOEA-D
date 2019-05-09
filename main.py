@@ -86,7 +86,6 @@ def sys_args():
     parser.add_argument("-m",
                         "--method",
                         help="Choose a method for running",
-                        nargs=1,
                         metavar="1/2/3/4",
                         choices=[1, 2, 3, 4],
                         type=int,
@@ -95,7 +94,6 @@ def sys_args():
     parser.add_argument("-t",
                         "--time",
                         help="Time for one run (unit: second)",
-                        nargs=1,
                         metavar="600",
                         default=600,
                         type=int
@@ -103,7 +101,6 @@ def sys_args():
     parser.add_argument("-i",
                         "--iter",
                         help="Iterations for each generation",
-                        nargs=1,
                         metavar="10",
                         default=10,
                         type=int
@@ -111,7 +108,6 @@ def sys_args():
     parser.add_argument("-c",
                         "--cores",
                         help="Acquired cores for running(for method 2/3/4)",
-                        nargs=1,
                         metavar="8",
                         default=8,
                         type=int
@@ -119,31 +115,36 @@ def sys_args():
     parser.add_argument("-o",
                         "--overlap",
                         help="Overlapping ratio(for method 3/4)",
-                        nargs=1,
                         metavar="0",
                         default=0,
                         type=float
                         )
+    parser.add_argument("-n",
+                        "--num",
+                        help="setting serial of this task",
+                        metavar="X",
+                        default=0,
+                        type=int
+                        )
     parser.add_argument("-d",
                         "--dataset",
                         help="Choose a dataset for running",
-                        nargs=1,
                         metavar="Iris",
                         required=True
                         )
     args = parser.parse_args()
-    method = args.method[0]
+    method = args.method
     packs = {}
     if method == 1:
         packs['method'] = method
-        if isinstance(args.time[0], int) and args.time[0] > 0:
-            packs['time'] = args.time[0]
+        if isinstance(args.time, int) and args.time > 0:
+            packs['time'] = args.time
         else:
             print("[ERROR]: Invalid time format")
             sys.exit()
         file_exist = False
         for item in dataset:
-            if item['name'] == args.dataset[0]:
+            if item['name'] == args.dataset:
                 file_exist = True
                 packs['name'] = item['name']
                 packs['file_name'] = item['file_name']
@@ -153,12 +154,12 @@ def sys_args():
                 packs['end'] = item['population_size']
                 break
         if file_exist is False:
-            print("[ERROR]: No such dataset exists: " + args.dataset[0])
+            print("[ERROR]: No such dataset exists: " + args.dataset)
             sys.exit()
     elif method == 2:
         packs['method'] = method
-        if isinstance(args.time[0], int) and args.time[0] > 0:
-            packs["time"] = args.time[0]
+        if isinstance(args.time, int) and args.time > 0:
+            packs["time"] = args.time
         else:
             print("[ERROR]: Invalid time format")
             sys.exit()
@@ -174,7 +175,7 @@ def sys_args():
             sys.exit()
         file_exist = False
         for item in dataset:
-            if item["name"] == args.dataset[0]:
+            if item["name"] == args.dataset:
                 packs["name"] = item["name"]
                 file_exist = True
                 packs["file_name"] = item["file_name"]
@@ -182,12 +183,12 @@ def sys_args():
                 packs["population_size"] = item["population_size"]
                 break
         if file_exist is False:
-            print("[ERROR]: No such dataset exists: " + args.dataset[0])
+            print("[ERROR]: No such dataset exists: " + args.dataset)
             sys.exit()
     elif method == 3:
         packs["method"] = method
-        if isinstance(args.time[0], int) and args.time[0] > 0:
-            packs["time"] = args.time[0]
+        if isinstance(args.time, int) and args.time > 0:
+            packs["time"] = args.time
         else:
             print("[ERROR]: Invalid time format")
             sys.exit()
@@ -201,14 +202,14 @@ def sys_args():
         else:
             print("[ERROR]: Invalid cores number format")
             sys.exit()
-        if isinstance(args.overlap[0], float) and args.overlap[0] > 0:
-            packs["overlap"] = args.overlap[0]
+        if isinstance(args.overlap, float) and args.overlap > 0:
+            packs["overlap"] = args.overlap
         else:
             print("[ERROR]: Invalid overlap ratio format")
             sys.exit()
         file_exist = False
         for item in dataset:
-            if item["name"] == args.dataset[0]:
+            if item["name"] == args.dataset:
                 packs["name"] = item["name"]
                 file_exist = True
                 packs["file_name"] = item["file_name"]
@@ -216,12 +217,12 @@ def sys_args():
                 packs["population_size"] = item["population_size"]
                 break
         if file_exist is False:
-            print("[ERROR]: No such dataset exists: " + args.dataset[0])
+            print("[ERROR]: No such dataset exists: " + args.dataset)
             sys.exit()
     elif method == 4:
         packs["method"] = method
-        if isinstance(args.time[0], int) and args.time[0] > 0:
-            packs["time"] = args.time[0]
+        if isinstance(args.time, int) and args.time > 0:
+            packs["time"] = args.time
         else:
             print("[ERROR]: Invalid time format")
             sys.exit()
@@ -235,14 +236,14 @@ def sys_args():
         else:
             print("[ERROR]: Invalid cores number format")
             sys.exit()
-        if isinstance(args.overlap[0], float) and args.overlap[0] > 0:
-            packs["overlap"] = args.overlap[0]
+        if isinstance(args.overlap, float) and args.overlap > 0:
+            packs["overlap"] = args.overlap
         else:
             print("[ERROR]: Invalid overlap ratio format")
             sys.exit()
         file_exist = False
         for item in dataset:
-            if item["name"] == args.dataset[0]:
+            if item["name"] == args.dataset:
                 packs["name"] = item["name"]
                 file_exist = True
                 packs["file_name"] = item["file_name"]
@@ -250,16 +251,17 @@ def sys_args():
                 packs["population_size"] = item["population_size"]
                 break
         if file_exist is False:
-            print("[ERROR]: No such dataset exists: " + args.dataset[0])
+            print("[ERROR]: No such dataset exists: " + args.dataset)
             sys.exit()
     else:
-        print("[ERROR]: No such method: " + str(args.method[0]))
+        print("[ERROR]: No such method: " + str(args.method))
         sys.exit()
+    packs["num"] = args.num
     return packs
 
 
 def run_task(packs: dict):
-    test_times = 15
+    test_times = 1
     if packs["method"] == 1:
         for i in range(test_times):
             population, obj = PMOEAD_bytime(
@@ -273,7 +275,7 @@ def run_task(packs: dict):
             name = '[dataset_{}][method_{}][time_{}][{}]'.format(packs["name"],
                                                                  packs["method"],
                                                                  packs["time"],
-                                                                 i)
+                                                                 packs["num"])
             store_result(obj, name)
     elif packs["method"] == 2:
         for i in range(test_times):
@@ -289,7 +291,7 @@ def run_task(packs: dict):
                                                                          packs["method"],
                                                                          packs["time"],
                                                                          packs["cores"],
-                                                                         i)
+                                                                         packs["num"])
             store_result(obj, name)
     elif packs["method"] == 3:
         for i in range(test_times):
@@ -307,7 +309,7 @@ def run_task(packs: dict):
                                                                                   packs["time"],
                                                                                   packs["cores"],
                                                                                   packs["overlap"],
-                                                                                  i)
+                                                                                  packs["num"])
             store_result(obj, name)
     else:
         for i in range(test_times):
@@ -326,8 +328,9 @@ def run_task(packs: dict):
                                                                                         packs["time"],
                                                                                         packs["cores"],
                                                                                         packs["overlap"],
-                                                                                        i)
+                                                                                        packs["num"])
             store_result(obj, name)
+
 
 if __name__ == '__main__':
     pack = sys_args()
