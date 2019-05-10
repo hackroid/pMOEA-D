@@ -2,7 +2,7 @@ import os
 from HypeVolume import*
 
 def store_result(obj, file_name):
-    path = './result' + os.path.sep
+    path = './src/result' + os.path.sep
     title = path + '{}.txt'.format(file_name)
     for i in range(len(obj)):
         frate = obj[i][0]
