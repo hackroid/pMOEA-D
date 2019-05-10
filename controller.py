@@ -10,8 +10,8 @@ from evaluate_solution import evaluate_single
 
 INF = 1e9
 Time_limit = 3600
-STEP = 0.01  ## Overlapping adding issue
-MAX_RATIO = 0.5  ## Maximum overlapping issue
+STEP = 0.005  ## Overlapping adding issue
+MAX_RATIO = 0.3  ## Maximum overlapping issue
 
 
 class ParallelWorker(mp.Process):

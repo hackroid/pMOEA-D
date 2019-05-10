@@ -1,5 +1,6 @@
-import numpy as np
+import os
 
+import numpy as np
 
 
 def calhy(x, y):
@@ -31,3 +32,26 @@ def get_can(m1):
         x1.append(m1[a][0])
         y1.append(m1[a][1])
     return x1, y1
+
+
+def get_directory(path):
+    fp = []
+    if os.path.isdir(path):
+        for root, dirs, files in os.walk(path):
+            for f in files:
+                cur = root + "/" + f
+                fp.append(cur)
+    else:
+        fp.append(path)
+    return fp
+
+
+def get_directory_hv(path):
+    fp = get_directory(path)
+
+    for path in fp:
+        print(path, get_hv(path))
+
+
+if __name__ == '__main__':
+    get_directory_hv('/home/kaiqiang/file/创新实验/result')
