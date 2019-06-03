@@ -6,14 +6,12 @@ import numpy as np
 def calhy(x, y):
     l = len(x)
     res = 0.0
-    for i in range(l):
-        if i == 0:
-            res = res + x[1] * (1 - y[0])
-        elif i == l - 1:
+    for i in range(1,l):
+        if i == l - 1:
             res = res + (1 - x[i]) * (1 - y[i])
         else:
-            res = res + (x[i + 1] - x[i]) * (1 - y[i]);
-    return res
+            res = res + (x[i + 1] - x[i]) * (1 - y[i])
+    return round(res,4)
 
 
 def get_hv(filename):
@@ -45,7 +43,9 @@ def get_directory(path):
         fp.append(path)
     return fp
 
-
+'''
+    Get the hv of the whole directory
+'''
 def get_directory_hv(path):
     fp = get_directory(path)
 
