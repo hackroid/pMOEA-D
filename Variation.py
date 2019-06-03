@@ -61,7 +61,7 @@ def mutPolynomialBounded(individual, eta, low, up, indpb):
             individual[i] = 0
     return individual
 
-# if __name__ == '__main__':
-#     p = CrossOver([1,0,1,1,1,0], [0,0,0,1,0,1], 6)
-#
-#     print(p)
+if __name__ == '__main__':
+    p = CrossOver([1,0,1,1,1,0], [0,0,0,1,0,1], 6)
+
+    print(p)

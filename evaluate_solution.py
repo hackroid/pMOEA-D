@@ -58,13 +58,16 @@ def evaluate_solution(solution, data):
 def evaluate_singlefitness(frate, erate, s, nref):
     return erate + 100 * max(s - nref, 0) + Alpha * frate
 
-
+'''
+    Calculate the fitness value
+    Fix bugs. nref should use dimension number to multiply
+'''
 def evaluate_fitness(solutions, obj, weight_vector):
     solution_num = len(solutions)
     fitness = [0 for _ in range(solution_num)]
     for i in range(solution_num):
         s = sum(solutions[i])
-        nref = int(weight_vector[i][0] * solution_num)
+        nref = int(weight_vector[i][0] * len(solutions[i]))
         fitness[i] = evaluate_singlefitness(obj[i][0], obj[i][1], s, nref)
     return fitness
 
