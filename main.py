@@ -1,3 +1,4 @@
+from MOEADDYN import MOEADDYN
 from PMOEAD import PMOEAD, PMOEAD_bytime
 from store_result import store_result
 from controller import parallel_run, parallel_run_bytime, naive_paralle
@@ -6,15 +7,14 @@ import time
 import sys
 import argparse
 
-
 INF = 1E9
 
 
 def run_test(file_name):
     feature_num = 13
-    if file_name == 'clean1.txt':
+    if file_name == 'src/dataset/clean1.txt':
         feature_num = 167
-    if file_name == 'Wine.txt':
+    if file_name == 'src/dataset/Wine.txt':
         feature_num = 13
     population_size = max(100, min(200, feature_num))
     run_time = 120
@@ -25,23 +25,24 @@ def run_test(file_name):
     cpu_num = 8
     overlapping_ratio = 0.2
     f = open('./result/chosenFile.txt', 'a')
+    test_MODEADDYN(f, file_name, feature_num, population_size, run_time, test_times)
     # parallel run
     # test_parallel_run_by_time(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num, population_size)
     # single run
     # test_PMOEAD_bytime(f, test_times, file_name, feature_num, population_size, run_time, begin, end)  # single
     # fix ratio
-    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    # test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
     #                                population_size, 0.1)
-    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    # test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
     #                                population_size, 0.3)
-    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    # test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
     #                                population_size, 0.4)
-    #test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    # test_parallel_run_by_time_ratio(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
     #                               population_size, 0.5)
 
     # auto run
-    test_parallel_run_by_time_auto(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
-                                   population_size)
+    # test_parallel_run_by_time_auto(f, test_times, run_time, iteration_num, cpu_num, file_name, feature_num,
+    #                                population_size)
 
     f.close()
 
@@ -120,6 +121,20 @@ def test_parallel_run_by_time_auto(f, test_times, run_time, iteration_num, cpu_n
     f.write('file:{}   chosen:the {} file\n'.format(name, order))
     print('run auto', file_name, 'ends')
 
+
+def test_MODEADDYN(f, file_name, dimension, population_size, max_time, test_times):
+    res = []
+    print('run auto', file_name, 'starts')
+    for i in range(test_times):
+        population, obj = MOEADDYN(file_name, dimension, population_size, max_time)
+        name = '{}__MOEADDYN_{}'.format(file_name[12:-4], i)
+        hv = store_result(obj, name)
+        res.append((i, hv))
+        print('Run', i, 'test')
+    order = chose_file(res)
+    name = '{}_MOEADDYN'.format(file_name[:-4])
+    f.write('file:{}   chosen:the {} file\n'.format(name, order))
+    print('run auto', file_name, 'ends')
 
 
 def load_dataset_prop():
@@ -404,11 +419,11 @@ def run_task(packs: dict):
 
 
 if __name__ == '__main__':
-#    file_name = 'clean1.txt'
-#    run_test(file_name)
+    file_name = 'src/dataset/Wine.txt'
+    run_test(file_name)
 
-    pack = sys_args()
-    run_task(pack)
+    # pack = sys_args()
+    # run_task(pack)
 
     # feature_num = 167
     # population_size = max(100, min(200, feature_num))

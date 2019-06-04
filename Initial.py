@@ -14,7 +14,7 @@ OBJ_NUM = 2
 def initial(population_size, dimension, file_name):
     data = numpy.loadtxt(file_name)
     population = generate(population_size, dimension)
-    weight_vector = generate_weightvector(population_size)
+    weight_vector = generate_weightvector(population_size, dimension)
     neighbours = get_neighbour(population_size)
     obj, z = evaluate_solution(population,  data)
     fitness = evaluate_fitness(population, obj, weight_vector)
