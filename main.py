@@ -404,8 +404,8 @@ def run_task(packs: dict):
 
 
 if __name__ == '__main__':
-#    file_name = 'clean1.txt'
-#    run_test(file_name)
+#   file_name = 'clean1.txt'
+#   run_test(file_name)
 
     pack = sys_args()
     run_task(pack)

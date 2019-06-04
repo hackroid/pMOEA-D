@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+#BSUB -J PMOEAD                 ###Set the job name to "PyTest"
+#BSUB -q short                  ### specify queue "debug"
+#BSUB -n 400                    ### ask for number of cores (default: 1)
+#BSUB –R “span[ptile=8]”        ### ask for 1 cores per node
+#BSUB -o stdout_%J.out          ### Specify the output and error file. %J is the job-id
+#BSUB -e stderr_%J.err          ### -o and -e mean append, -oo and -eo mean overwrite
+
+seq 1 50 | /share/base/parallel/bin/parallel /share/apps/python/3.7.0/bin/python3 ./main.py -m 3 -t 600 -o 0.5 -d clean1 -n {}
